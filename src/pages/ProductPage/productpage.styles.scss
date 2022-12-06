@@ -1,0 +1,104 @@
+@import '../../mixins.scss';
+
+.product-page {
+    width: 100%;
+    height: auto;
+    padding: 4rem;
+    min-height: calc(100vh - 80px);
+    @include lg-tablet {
+        padding: 4rem 2rem;
+    }
+    @include mobile {
+        padding: 2rem;
+    }
+
+    &-hero {
+        width: 100%;
+        display: flex;
+        height: auto;
+        justify-content: space-between;
+        @include mobile {
+            flex-direction: column;
+        }
+
+        img {
+            flex: 0.3;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            box-shadow: 10px 10px 30px 0 rgba(0, 0, 0, 0.4);
+            @include lg-tablet {
+                flex: 0.5;
+                height: 50vh;
+                margin-right: 2rem;
+            }
+            @include mobile {
+                flex: 1;
+                width: 100%;
+                height: 60vh;
+                // object-fit: contain;
+                margin-bottom: 2rem;
+            }
+        }
+
+        &-content {
+            flex: 0.65;
+            @include mobile {
+                flex: 1;
+            }
+
+            h1 {
+                @include tablet {
+                    font-size: 1.5rem;
+                    line-height: 2rem;
+                }
+            }
+
+            .variant_container {
+                flex-wrap: wrap;
+
+                .variant {
+                    margin: 0 1rem 1rem 0;
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: $primary;
+                    }
+                }
+            }
+
+            .cta-buttons {
+                @include tablet {
+                    flex-direction: column;
+                }
+
+                button {
+                    margin: 0;
+
+                    &:last-child {
+                        margin-left: 2rem;
+                        @include tablet {
+                            margin: 0.5rem 0 0 0;
+                        }
+                    }
+                }
+
+                .quantityBtns {
+                    width: 30%;
+                    margin: 0;
+                    @include tablet {
+                        width: 100%;
+                    }
+
+                    button {
+                        margin: 0;
+                    }
+
+                    input {
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,106 @@
+@import '../../mixins.scss';
+
+.cart-wrapper {
+    display: flex;
+    min-height: calc(100vh - 5rem);
+    padding: 6rem 4rem 2rem 4rem;
+    @include lg-tablet {
+        flex-direction: column-reverse;
+        padding: 2rem;
+    }
+
+    .cart {
+        flex: 0.8;
+
+        &-heading {
+            font-weight: 600;
+            text-transform: none;
+        }
+
+        .cart-items {
+            margin-top: 2rem;
+            padding-right: 2rem;
+            @include mobile {
+                padding: 0;
+            }
+
+            &-heading {
+                // width: 100%;
+                display: grid;
+                grid-template-columns: 4fr 1fr 1fr 1fr 100px;
+
+                span {
+                    text-transform: uppercase;
+                    margin-right: 2rem;
+
+                    &:first-child {
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+
+        .continue-shopping {
+            display: block;
+            margin-left: auto;
+            // font-size: 1rem;
+        }
+    }
+
+    .cart-checkout {
+        flex: 0.2;
+        position: sticky;
+        top: calc(80px + 1rem);
+        // height: auto;
+        @include lg-tablet {
+            position: relative;
+            top: 0;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            line-height: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .heading {
+            opacity: 0.4;
+            // text-transform: capitalize;
+        }
+
+        &-cta {
+            display: flex;
+            align-items: center;
+            @include lg-tablet {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                min-height: 80px;
+                padding: 1rem 2rem;
+            }
+
+            .total-amount {
+                flex: 0.5;
+            }
+
+            button {
+                flex: 0.5;
+                min-height: 45px;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .cart-checkout-cta {
+        flex-direction: column;
+
+        .total-amount {
+            width: 100%;
+            display: flex;
+            margin-bottom: 1rem;
+            justify-content: space-between;
+        }
+    }
+}
