@@ -1,7 +1,7 @@
 import axios from './axios';
 import { useEffect } from 'react';
 import { useLocalStorage } from './hooks';
-import { useModal, useDataLayer } from './context';
+import { useDataLayer } from './context';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // Styles
@@ -9,16 +9,9 @@ import './global.scss';
 
 // React components
 import { HomePage, CartPage, ListingPage, ProductPage, WishlistPage } from './pages';
-import {
-    Nav,
-    Toast,
-    EnhancedAuthModal as AuthModal,
-    EnhancedVariantModal as VariantModal,
-    EnhancedWishlistModal as WishlistModal,
-} from './components';
+import { Nav, Toast } from './components';
 
 export const App = () => {
-    const [{ wishlist, auth, variant: variantModal }] = useModal();
     const [{ books, toasts }, dataDispatch] = useDataLayer();
     const [saveToLocalStorage, getFromLocalStorage] = useLocalStorage();
 
@@ -115,19 +108,6 @@ export const App = () => {
                     <Route exact path='/wishlists/:id' element={<WishlistPage />} />
                 </Routes>
             </Router>
-            {auth?.isActive && (
-                <AuthModal
-                    auth={auth.state.authState}
-                    modal={auth}
-                    dispatchType='UPDATE_AUTH_MODAL'
-                />
-            )}
-            {wishlist?.isActive && (
-                <WishlistModal modal={wishlist} dispatchType='UPDATE_WISHLIST_MODAL' />
-            )}
-            {variantModal?.isActive && (
-                <VariantModal modal={variantModal} dispatchType='UPDATE_VARIANT_MODAL' />
-            )}
             {toasts?.length > 0 && <Toast />}
         </>
     );

@@ -1,7 +1,7 @@
 import axios from '../../../axios';
 import { Link } from 'react-router-dom';
 import { useWindowSize } from '../../../hooks';
-import { useAuth, useModal, useTheme, useDataLayer } from '../../../context';
+import { useAuth, useTheme, useDataLayer, useModalManager } from '../../../context';
 
 // React components
 import { CartIcon } from '../../../react_icons/CartIcon';
@@ -13,7 +13,7 @@ import { LightModeIcon } from '../../../react_icons/LightModeIcon';
 
 export const DesktopNav = ({ setAuthModal }) => {
     const _window = useWindowSize();
-    const [_modal, modalDispatch] = useModal();
+    const { showModal } = useModalManager();
     const [{ cart }, dataDispatch] = useDataLayer();
     const [{ currentUser }, authDispatch] = useAuth();
     const { theme, isLightTheme, setTheme } = useTheme();
@@ -73,9 +73,8 @@ export const DesktopNav = ({ setAuthModal }) => {
                                 <>
                                     <li
                                         onClick={() =>
-                                            modalDispatch({
-                                                type: 'UPDATE_AUTH_MODAL',
-                                                payload: { state: { authState: 'login' } },
+                                            showModal('AUTH_MODAL', {
+                                                state: { authState: 'login' },
                                             })
                                         }
                                         style={{
@@ -86,9 +85,8 @@ export const DesktopNav = ({ setAuthModal }) => {
                                     </li>
                                     <li
                                         onClick={() =>
-                                            modalDispatch({
-                                                type: 'UPDATE_AUTH_MODAL',
-                                                payload: { state: { authState: 'signup' } },
+                                            showModal('AUTH_MODAL', {
+                                                state: { authState: 'signup' },
                                             })
                                         }
                                         style={{

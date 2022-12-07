@@ -1,24 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DataProvider } from './context/DataProvider';
-import { AuthProvider } from './context/AuthProvider';
-import { ThemeProvider } from './context/ThemeProvider';
 
 // React components
 import { App } from './App';
-import { ModalProvider } from './context/ModalProvider';
+import { ModalProvider, DataProvider, AuthProvider, ThemeProvider } from './context';
 
 ReactDOM.render(
     <React.StrictMode>
-        <AuthProvider>
-            <DataProvider>
-                <ModalProvider>
-                    <ThemeProvider>
+        <ThemeProvider>
+            <AuthProvider>
+                <DataProvider>
+                    <ModalProvider>
                         <App />
-                    </ThemeProvider>
-                </ModalProvider>
-            </DataProvider>
-        </AuthProvider>
+                    </ModalProvider>
+                </DataProvider>
+            </AuthProvider>
+        </ThemeProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

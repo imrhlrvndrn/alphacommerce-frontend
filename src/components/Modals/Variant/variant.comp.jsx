@@ -1,21 +1,23 @@
 import { useEffect } from 'react';
 import axios from '../../../axios';
-import { withModalOverlay } from '../../../hoc';
-import { useModal, useTheme, useDataLayer } from '../../../context';
+import { useTheme, useDataLayer, useModalManager } from '../../../context';
 
 // styles
 import './variant.styles.scss';
 
-export const VariantModal = ({ modal, dispatchType }) => {
+// components
+import { Modal } from '../../';
+
+export const VariantModal = ({}) => {
+    const { modal, hideModal } = useModalManager();
+    const { theme } = useTheme();
+    const [{ cart }, dataDispatch] = useDataLayer();
     const {
         state: {
             variants,
             selectedVariant: { cartItemId, bookId, variant },
         },
-    } = modal;
-    const { theme } = useTheme();
-    const [_, modalDispatch] = useModal();
-    const [{ cart }, dataDispatch] = useDataLayer();
+    } = modal?.props;
 
     const updateVariant = async (variant) => {
         try {
@@ -39,7 +41,7 @@ export const VariantModal = ({ modal, dispatchType }) => {
                 });
                 dataDispatch({ type: 'SET_TOAST', payload: { data: toast } });
             }
-            modalDispatch({ type: dispatchType });
+            hideModal();
         } catch (error) {
             console.error(error);
         }
@@ -48,24 +50,28 @@ export const VariantModal = ({ modal, dispatchType }) => {
     useEffect(() => {}, [cart]);
 
     return (
-        <div className='variant-modal' style={{ color: theme.color }}>
-            <h1 className='font-lg'>Select a variant</h1>
-            {variants.map((item) => (
-                <div
-                    className='variant-option'
-                    key={item._id}
-                    style={{
-                        backgroundColor:
-                            variant.type === item.type ? theme.light_background : 'transparent',
-                    }}
-                    onClick={() => updateVariant(item)}
-                >
-                    {item.type}
-                </div>
-            ))}
-        </div>
+        <Modal>
+            <div className='variant-modal' style={{ color: theme?.color }}>
+                <h1 className='font-lg'>Select a variant</h1>
+                {variants?.map((item) => (
+                    <div
+                        className='variant-option'
+                        key={item?._id}
+                        style={{
+                            backgroundColor:
+                                variant?.type === item?.type
+                                    ? theme?.light_background
+                                    : 'transparent',
+                        }}
+                        onClick={() => updateVariant(item)}
+                    >
+                        {item?.type}
+                    </div>
+                ))}
+            </div>
+        </Modal>
     );
 };
 
-const EnhancedVariantModal = withModalOverlay(VariantModal);
+const EnhancedVariantModal = '';
 export { EnhancedVariantModal };

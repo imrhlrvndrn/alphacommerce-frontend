@@ -1,11 +1,12 @@
 import { v4 } from 'uuid';
 import axios from '../axios';
-import { useToast } from '../hooks';
-import { useDataLayer, useModal, useAuth } from '../context';
+import { useToast } from './';
+import { useDataLayer, useAuth, useModalManager } from '../context';
 
 export const useWishlist = () => {
     const { setToast } = useToast();
-    const [{ wishlist }, modalDispatch] = useModal();
+    // const [{ wishlist }, modalDispatch] = useModal();
+    const { modal, hideModal } = useModalManager();
     const [_, dataDispatch] = useDataLayer();
     const [{ currentUser }] = useAuth();
 
@@ -14,7 +15,9 @@ export const useWishlist = () => {
             const {
                 data: { success, data, toast, statusCode, message, status },
             } = await axios.post(`/wishlists/${wishlistId}`, {
-                wishlistItem: wishlist.state[0],
+                // * The below line takes the wishlist obj from the state of the wishlist modal (props)
+                // ! wishlistItem: wishlist.state[0],
+                wishlistItem: modal?.props?.[0],
                 type: 'ADD_TO_WISHLIST',
             });
 
@@ -26,16 +29,13 @@ export const useWishlist = () => {
                     type: 'ADD_TO_WISHLIST',
                     payload: {
                         wishlistId: wishlistId,
-                        data: [{ book: data.wishlist }],
-                        estimated_price: data.estimated_price,
+                        data: [{ book: data?.wishlist }],
+                        estimated_price: data?.estimated_price,
                     },
                 });
             } else if (statusCode === 209) {
-                console.log('Already exists');
                 setToast({ status, message, _id: v4() });
             }
-
-            modalDispatch({ type: 'UPDATE_WISHLIST_MODAL' });
         } catch (error) {
             setToast({
                 _id: v4(),
@@ -45,12 +45,13 @@ export const useWishlist = () => {
             console.error(error);
         } finally {
             setDisabled(false);
+            hideModal();
         }
     };
 
-    const createWishlist = async (event) => {
+    const createWishlist = async (wishlist_name) => {
         try {
-            if (!event.target.textContent || !event.target.innerText)
+            if (!wishlist_name)
                 return setToast({
                     _id: v4(),
                     status: 'failed',
@@ -63,12 +64,8 @@ export const useWishlist = () => {
                 type: 'CREATE_WISHLIST',
                 wishlists: [
                     {
-                        user: currentUser._id,
-                        name: { name: event.target.textContent || event.target.innerText },
-                        cover_image: {
-                            url: 'https://images.pexels.com/photos/2685319/pexels-photo-2685319.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-                        },
-                        estimated_price: 0,
+                        user: currentUser?._id,
+                        name: { name: wishlist_name },
                         data: [],
                     },
                 ],
@@ -78,7 +75,7 @@ export const useWishlist = () => {
                 setToast({ ...toast, _id: v4() });
                 dataDispatch({
                     type: 'CREATE_WISHLIST',
-                    payload: data.wishlists,
+                    payload: data?.wishlists,
                 });
             }
         } catch (error) {

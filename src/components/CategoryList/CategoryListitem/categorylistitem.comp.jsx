@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { maxWords } from '../../../utils';
 import { useWindowSize, useCart } from '../../../hooks';
-import { useAuth, useModal, useTheme, useDataLayer } from '../../../context';
+import { useAuth, useTheme, useDataLayer, useModalManager } from '../../../context';
 
 // styles
 import './categorylistitem.styles.scss';
@@ -14,11 +14,13 @@ export const CategoryListItem = ({ item }) => {
     const { theme } = useTheme();
     const _window = useWindowSize();
     const [{ currentUser }] = useAuth();
-    const [_, modalDispatch] = useModal();
+    const { showModal, modal } = useModalManager();
     const { addToCart, removeFromCart } = useCart();
     const [{ cart }, dataDispatch] = useDataLayer();
     const [existsInCart, setExistsInCart] = useState(false);
     const { _id, name, cover_image, variants, link, authors } = item;
+
+    const user_is_authenticated = currentUser?._id !== 'guest';
 
     useEffect(() => {
         // const userIndex = cart.findIndex((cartItem) => cartItem.userId === currentUser);
@@ -69,21 +71,24 @@ export const CategoryListItem = ({ item }) => {
                     <div
                         className='bibliography-icon'
                         style={{ backgroundColor: theme.color }}
-                        onClick={() =>
-                            modalDispatch({
-                                type:
-                                    currentUser._id !== 'guest'
-                                        ? 'UPDATE_WISHLIST_MODAL'
-                                        : 'UPDATE_AUTH_MODAL',
-
-                                payload: {
-                                    state:
-                                        currentUser._id !== 'guest'
-                                            ? [item]
-                                            : { authState: 'login' },
-                                },
-                            })
-                        }
+                        onClick={() => {
+                            showModal(
+                                user_is_authenticated ? 'WISHLIST_MODAL' : 'AUTH_MODAL',
+                                user_is_authenticated ? [item] : { state: { authState: 'login' } }
+                            );
+                            // modalDispatch({
+                            //     type:
+                            //         currentUser._id !== 'guest'
+                            //             ? 'UPDATE_WISHLIST_MODAL'
+                            //             : 'UPDATE_AUTH_MODAL',
+                            //     payload: {
+                            //         state:
+                            //             currentUser._id !== 'guest'
+                            //                 ? [item]
+                            //                 : { authState: 'login' },
+                            //     },
+                            // })
+                        }}
                     >
                         <OutlinedWishListIcon style={{ fill: theme.dark_background }} />
                     </div>

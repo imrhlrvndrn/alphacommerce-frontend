@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import axios from '../axios';
-import { useDataLayer } from '../context/DataProvider';
-import { useToast } from './useToast';
+import { useDataLayer } from '../context';
+import { useToast } from './';
 
 export const useCart = () => {
     const [{ cart }, dataDispatch] = useDataLayer();

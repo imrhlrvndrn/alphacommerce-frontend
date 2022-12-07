@@ -1,6 +1,6 @@
 import axios from '../../../axios';
 import { maxWords } from '../../../utils';
-import { useTheme, useModal, useDataLayer } from '../../../context';
+import { useTheme, useDataLayer, useModalManager } from '../../../context';
 
 // styles
 import './cartitem.styles.scss';
@@ -14,7 +14,8 @@ export const CartItem = ({ item }) => {
         variant,
         total,
     } = item;
-    const [_, modalDispatch] = useModal();
+    // const [_, modalDispatch] = useModal();
+    const { showModal } = useModalManager();
     const { theme } = useTheme();
     const [{ cart }, dataDispatch] = useDataLayer();
 
@@ -40,6 +41,18 @@ export const CartItem = ({ item }) => {
         }
     };
 
+    const display_variant_modal = () =>
+        showModal('VARIANT_MODAL', {
+            state: {
+                selectedVariant: {
+                    cartItemId: item?._id,
+                    variant,
+                    bookId: _id,
+                },
+                variants: item?.book?.variants,
+            },
+        });
+
     return (
         <>
             <div className='cartItem_wrapper' style={{ color: theme.color }}>
@@ -58,21 +71,7 @@ export const CartItem = ({ item }) => {
                                     backgroundColor: theme.color,
                                     color: theme.dark_background,
                                 }}
-                                onClick={() =>
-                                    modalDispatch({
-                                        type: 'UPDATE_VARIANT_MODAL',
-                                        payload: {
-                                            state: {
-                                                selectedVariant: {
-                                                    cartItemId: item._id,
-                                                    variant,
-                                                    bookId: _id,
-                                                },
-                                                variants: item.book.variants,
-                                            },
-                                        },
-                                    })
-                                }
+                                onClick={() => display_variant_modal()}
                             >
                                 Variant: <strong className='font-semibold'>{variant?.type}</strong>
                             </button>

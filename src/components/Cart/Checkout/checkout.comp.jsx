@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useTheme } from '../../../context/ThemeProvider';
+import { useTheme } from '../../../context/Theme/theme.context';
 import { useDataLayer } from '../../../context';
 import { calculateSubTotal, calculateTax, calculateTotal, fixedTo } from '../../../utils';
 
@@ -27,21 +27,6 @@ export const CartCheckout = ({ setWishlistModal }) => {
                     </div>
                 </div>
             </div>
-            {/* <div className='checkout-group pt-1 pb-1'>
-                <div className='checkout-group-row flex flex-justify-sb mb-1'>
-                    <div className='heading'>total</div>
-                    <div className='price'>
-                        ₹{' '}
-                        {fixedTo(
-                            calculateTotal(
-                                calculateSubTotal(cart.data),
-                                calculateTax(calculateSubTotal(cart.data))
-                            ),
-                            2
-                        )}
-                    </div>
-                </div>
-            </div> */}
             <div className='cart-checkout-cta' style={{ backgroundColor: theme.light_background }}>
                 <div className='total-amount'>
                     <div className='heading'>Total</div>
@@ -65,18 +50,6 @@ export const CartCheckout = ({ setWishlistModal }) => {
                 >
                     Checkout
                 </button>
-                {/* <button
-                    className='w-100p text-align-center'
-                    style={{ backgroundColor: 'transparent', color: theme.color }}
-                    onClick={() =>
-                        setWishlistModal((prevState) => ({
-                            ...prevState,
-                            isActive: !prevState.isActive,
-                        }))
-                    }
-                >
-                    Add to wishlist
-                </button> */}
             </div>
         </div>
     );

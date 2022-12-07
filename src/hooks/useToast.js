@@ -1,4 +1,4 @@
-import { useDataLayer } from '../context/DataProvider';
+import { useDataLayer } from '../context';
 
 export const useToast = () => {
     const [{ toasts }, dataDispatch] = useDataLayer();

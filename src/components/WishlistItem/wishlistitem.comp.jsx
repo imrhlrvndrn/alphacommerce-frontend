@@ -40,7 +40,10 @@ export const WishlistItem = ({ item }) => {
     };
 
     return (
-        <div className='wishlistItem_wrapper' style={{ color: theme.color }}>
+        <div
+            className='wishlistItem_wrapper'
+            style={{ color: theme?.color, borderBottom: `1px solid ${theme?.color}` }}
+        >
             <div className='wishlistItem_container'>
                 <div className='wishlistItem_details'>
                     <p className='name'>{maxWords(name, 30)}</p>

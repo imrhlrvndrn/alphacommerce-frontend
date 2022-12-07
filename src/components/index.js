@@ -7,15 +7,7 @@ export { InputGroup } from './InputGroup/inputgroup.comp';
 export { Radio, Checkbox } from './Inputs/inputs.comp';
 export { ListingProducts } from './Listing/listing.comp';
 export { Modal } from './Modal/modal.layout';
-export {
-    Address,
-    AuthModal,
-    EnhancedAuthModal,
-    VariantModal,
-    EnhancedVariantModal,
-    WishlistModal,
-    EnhancedWishlistModal,
-} from './Modals';
+export { Address, AuthModal, VariantModal, AddToWishlistModal, NewWishlistModal } from './Modals';
 export { Nav, MobileNav, DesktopNav } from './Nav/nav.comp';
 export { ProductList } from './ProductList/productlist.comp';
 export { Toast } from './Toast/toast.comp';

@@ -1,4 +1,5 @@
 export { Address } from './Address/address.comp';
-export { AuthModal, EnhancedAuthModal } from './AuthModal/authmodal.comp';
-export { VariantModal, EnhancedVariantModal } from './Variant/variant.comp';
-export { WishlistModal, EnhancedWishlistModal } from './Wishlist/wishlist.comp';
+export { AuthModal } from './AuthModal/authmodal.comp';
+export { VariantModal } from './Variant/variant.comp';
+export { AddToWishlistModal } from './Wishlist/AddToWishlist/addtowishlistmodal.comp';
+export { NewWishlistModal } from './Wishlist/NewWishlist/newwishlistmodal.comp';

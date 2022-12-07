@@ -2,7 +2,7 @@ import axios from '../../axios';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useDataLayer, useAuth, useTheme, useModal } from '../../context';
+import { useDataLayer, useAuth, useTheme, useModalManager } from '../../context';
 
 // React Components
 import { WishlistCard, WishlistItem } from '../../components';
@@ -11,7 +11,7 @@ export const WishlistPage = () => {
     const { theme } = useTheme();
     const navigate = useNavigate();
     const urlParams = useParams();
-    const [_, modalDispatch] = useModal();
+    const { showModal } = useModalManager();
     const [{ currentUser }] = useAuth();
     const [{ wishlists }, dataDispatch] = useDataLayer();
     const wishlistIndex = wishlists?.findIndex((item) => item?._id === urlParams?.id);
@@ -34,7 +34,7 @@ export const WishlistPage = () => {
             });
             if (success) {
                 dataDispatch({ type: 'SET_WISHLISTS', payload: { wishlists: data?.wishlists } });
-                console.log(`---Fetched wishlists---`, data?.wishlists);
+                if (urlParams?.id) return;
                 navigate(`/wishlists/${data?.wishlists?.[0]?._id}`, { replace: true });
             }
         } catch (error) {
@@ -42,7 +42,7 @@ export const WishlistPage = () => {
         }
     };
 
-    useEffect(() => {}, [urlParams?.id, currentUser]);
+    // useEffect(() => {}, [urlParams?.id, currentUser]);
 
     useEffect(() => {
         if (Cookies.get('userId') !== 'loggedout') (async () => await fetchWishlists())();
@@ -79,20 +79,19 @@ export const WishlistPage = () => {
                             color: theme?.color,
                             marginBottom: '1rem',
                         }}
-                        onClick={() =>
-                            modalDispatch({
-                                type: 'UPDATE_WISHLIST_MODAL',
-                                payload: {
-                                    state: {},
-                                },
-                            })
-                        }
+                        onClick={() => {
+                            showModal('NEW_WISHLIST_MODAL');
+                        }}
                     >
                         Add New Wishlist
                     </button>
                     <div className='checkout-group mb-4'>
                         {wishlists?.map((wishlist) => (
-                            <WishlistCard name={wishlist?.name?.name} />
+                            <WishlistCard
+                                name={wishlist?.name?.name}
+                                _id={wishlist?._id}
+                                key={wishlist?._id}
+                            />
                         ))}
                     </div>
                 </div>

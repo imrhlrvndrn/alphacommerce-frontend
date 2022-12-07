@@ -2,22 +2,21 @@ import { v4 } from 'uuid';
 import { useState } from 'react';
 import axios from '../../../axios';
 import { useToast } from '../../../hooks';
-import { withModalOverlay } from '../../../hoc';
-import { useAuth, useTheme, useModal, useDataLayer } from '../../../context';
+import { useAuth, useTheme, useModalManager, useDataLayer } from '../../../context';
 
 // styles
 import './authmodal.styles.scss';
 
 // React components
-import { InputGroup } from '../../';
+import { InputGroup, Modal } from '../../';
 
-export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
+export const AuthModal = () => {
     const { theme } = useTheme();
     const { setToast } = useToast();
-    const [_, modalDispatch] = useModal();
+    const { modal, hideModal } = useModalManager();
     const [{ currentUser }, authDispatch] = useAuth();
     const [{ cart }, dataDispatch] = useDataLayer();
-    const [authState, setAuthState] = useState(auth);
+    const [authState, setAuthState] = useState(modal?.props?.state?.authState);
     const [authData, setAuthData] = useState({});
 
     const updateAuthData = (event) =>
@@ -43,7 +42,7 @@ export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
                         type: 'SET_CART',
                         payload: {
                             cart: {
-                                ...data.cart,
+                                ...data?.cart,
                             },
                         },
                     });
@@ -68,8 +67,8 @@ export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
                         toast,
                     },
                 } = await axios.post('/auth/login', {
-                    email: authData.auth_email,
-                    password: authData.auth_password,
+                    email: authData?.auth_email,
+                    password: authData?.auth_password,
                 });
 
                 if (success) {
@@ -87,7 +86,7 @@ export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
                         },
                     });
                     // ! Make another API call to update the cart details
-                    await mergeGuestCartItems(user.cart._id, cart.data);
+                    await mergeGuestCartItems(user?.cart?._id, cart?.data);
                 }
             } else if (action === 'signup') {
                 const {
@@ -97,9 +96,9 @@ export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
                         toast,
                     },
                 } = await axios.post('/auth/signup', {
-                    full_name: authData.auth_fullname,
-                    email: authData.auth_email,
-                    password: authData.auth_password,
+                    full_name: authData?.auth_fullname,
+                    email: authData?.auth_email,
+                    password: authData?.auth_password,
                     avatar: {},
                 });
 
@@ -112,7 +111,7 @@ export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
                         type: 'SIGNUP',
                         payload: { ...user },
                     });
-                    await mergeGuestCartItems(user.cart, cart.data);
+                    await mergeGuestCartItems(user?.cart, cart?.data);
                 }
             }
         } catch (error) {
@@ -122,7 +121,7 @@ export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
                 message: error?.response?.data?.message || 'Data sync was not able to complete',
             });
         } finally {
-            modalDispatch({ type: 'UPDATE_AUTH_MODAL' });
+            hideModal();
         }
     };
 
@@ -130,98 +129,101 @@ export const AuthModal = ({ auth = 'signup', modal, dispatchType }) => {
         {
             condition: ['signup'],
             label: {
-                style: { color: theme.color },
+                style: { color: theme?.color },
             },
             input: {
                 name: 'auth_fullname',
                 placeholder: 'Full name',
-                style: { backgroundColor: theme.light_background, color: theme.color },
+                style: { backgroundColor: theme?.light_background, color: theme?.color },
                 type: 'text',
-                value: authState.auth_fullname,
+                value: authData?.auth_fullname,
             },
         },
         {
             condition: ['signup'],
             label: {
-                style: { color: theme.color },
+                style: { color: theme?.color },
             },
             input: {
                 name: 'auth_username',
                 placeholder: 'Username',
-                style: { backgroundColor: theme.light_background, color: theme.color },
+                style: { backgroundColor: theme?.light_background, color: theme?.color },
                 type: 'text',
-                value: authState.auth_username,
+                value: authData?.auth_username,
             },
         },
         {
             condition: ['signup', 'login'],
             label: {
-                style: { color: theme.color },
+                style: { color: theme?.color },
             },
             input: {
                 name: 'auth_email',
                 placeholder: 'Email',
-                style: { backgroundColor: theme.light_background, color: theme.color },
+                style: { backgroundColor: theme?.light_background, color: theme?.color },
                 type: 'email',
-                value: authState.auth_email,
+                value: authData?.auth_email,
             },
         },
         {
             condition: ['signup', 'login'],
             label: {
-                style: { color: theme.color },
+                style: { color: theme?.color },
             },
             input: {
                 name: 'auth_password',
                 placeholder: 'Password',
-                style: { backgroundColor: theme.light_background, color: theme.color },
+                style: { backgroundColor: theme?.light_background, color: theme?.color },
                 type: 'password',
-                value: authState.auth_password,
+                value: authData?.auth_password,
             },
         },
     ];
 
     return (
-        <div className='auth-modal'>
-            <form
-                style={{ color: theme.color }}
-                onSubmit={(event) => authActionHandler(event, { action: authState })}
-            >
-                {inputs?.map(
-                    (input) =>
-                        input.condition.includes(authState) && (
-                            <InputGroup
-                                onChange={updateAuthData}
-                                data={{ label: input.label, input: input.input }}
-                            />
-                        )
-                )}
-                {authState === 'login' && (
-                    <div className='form-cta' style={{ color: theme.color }}>
-                        Forgot password?
+        <Modal>
+            <div className='auth-modal'>
+                <form
+                    style={{ color: theme?.color }}
+                    onSubmit={(event) => authActionHandler(event, { action: authState })}
+                >
+                    {inputs?.map(
+                        (input) =>
+                            input?.condition?.includes(authState) && (
+                                <InputGroup
+                                    onChange={updateAuthData}
+                                    data={{ label: input?.label, input: input?.input }}
+                                />
+                            )
+                    )}
+                    {authState === 'login' && (
+                        <div className='form-cta' style={{ color: theme?.color }}>
+                            Forgot password?
+                        </div>
+                    )}
+                    <button
+                        type='submit'
+                        style={{
+                            backgroundColor: theme?.constants?.primary,
+                            color: theme?.constants?.dark,
+                        }}
+                    >
+                        {authState}
+                    </button>
+                    <div
+                        className='form-toggle'
+                        onClick={() =>
+                            setAuthState((prevState) =>
+                                prevState === 'signup' ? 'login' : 'signup'
+                            )
+                        }
+                    >
+                        {authState === 'signup'
+                            ? 'Already a member? Login'
+                            : 'Create a new account?'}
                     </div>
-                )}
-                <button
-                    type='submit'
-                    style={{
-                        backgroundColor: theme.constants.primary,
-                        color: theme.constants.dark,
-                    }}
-                >
-                    {authState}
-                </button>
-                <div
-                    className='form-toggle'
-                    onClick={() =>
-                        setAuthState((prevState) => (prevState === 'signup' ? 'login' : 'signup'))
-                    }
-                >
-                    {authState === 'signup' ? 'Already a member? Login' : 'Create a new account?'}
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        </Modal>
     );
 };
-
-const EnhancedAuthModal = withModalOverlay(AuthModal);
-export { EnhancedAuthModal };

@@ -23,7 +23,7 @@ export const CategoryList = ({ genre }) => {
                 limit,
                 genre,
             });
-            if (success) setBooks((prevState) => data.books);
+            if (success) setBooks((prevState) => data?.books);
         } catch (error) {
             console.error(error);
         }
@@ -36,9 +36,9 @@ export const CategoryList = ({ genre }) => {
     return (
         <div className='category-section'>
             {genre && (
-                <div className='heading flex justify-between' style={{ color: theme.color }}>
+                <div className='heading flex justify-between' style={{ color: theme?.color }}>
                     {genre}
-                    <span style={{ color: theme.color }} className='floating-genre'>
+                    <span style={{ color: theme?.color }} className='floating-genre'>
                         {genre}
                     </span>
                     {/* <Link
@@ -51,7 +51,7 @@ export const CategoryList = ({ genre }) => {
                         Show all
                     </Link> */}
                     <button
-                        style={{ color: theme.color, backgroundColor: 'transparent', padding: 0 }}
+                        style={{ color: theme?.color, backgroundColor: 'transparent', padding: 0 }}
                         onClick={() => navigate('/p', { state: { genre } })}
                     >
                         Show all
@@ -59,8 +59,8 @@ export const CategoryList = ({ genre }) => {
                 </div>
             )}
             <div className='category-list flex'>
-                {books?.map((productItem) => (
-                    <CategoryListItem key={productItem._id} item={productItem} />
+                {books?.map((book) => (
+                    <CategoryListItem key={book?._id} item={book} />
                 ))}
             </div>
         </div>
