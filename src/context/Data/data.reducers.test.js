@@ -1,4 +1,4 @@
-import { reducer } from './dataReducer';
+import { data_reducers } from '../';
 
 describe('Testing Data reducer => ', () => {
     it('should test SET_TOAST ( Adding new toast )', () => {
@@ -17,7 +17,7 @@ describe('Testing Data reducer => ', () => {
             toasts: [],
         };
 
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({
             toasts: [
                 {
@@ -39,7 +39,7 @@ describe('Testing Data reducer => ', () => {
             },
         };
 
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({
             toasts: [
                 {
@@ -81,7 +81,7 @@ describe('Testing Data reducer => ', () => {
             ],
         };
 
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({
             toasts: [
                 {
@@ -98,7 +98,7 @@ describe('Testing Data reducer => ', () => {
                 data: { toastId: '1234' },
             },
         };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({
             toasts: [],
         });
@@ -112,13 +112,13 @@ describe('Testing Data reducer => ', () => {
 
         const initialState = { genres: [] };
 
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({
             genres: ['web development', 'horror', 'finance'],
         });
 
         action = { type: 'SET_GENRES', payload: ['horror', 'action'] };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({
             genres: ['web development', 'horror', 'finance', 'action'],
         });
@@ -132,7 +132,7 @@ describe('Testing Data reducer => ', () => {
 
         const initialState = { authors: [] };
 
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({
             authors: ['Peter Thiel', 'Kyle Simpson', 'Morgan Housel'],
         });
@@ -141,7 +141,7 @@ describe('Testing Data reducer => ', () => {
             type: 'SET_AUTHORS',
             payload: ['Peter Thiel', 'Stephen King'],
         };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({
             authors: ['Peter Thiel', 'Kyle Simpson', 'Morgan Housel', 'Stephen King'],
         });
@@ -203,7 +203,7 @@ describe('Testing Data reducer => ', () => {
             books: [],
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             books: [
                 {
@@ -262,7 +262,7 @@ describe('Testing Data reducer => ', () => {
         };
 
         const initialState = { genreFilters: [] };
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({ genreFilters: ['horror'] });
 
         // Adding finance
@@ -270,7 +270,7 @@ describe('Testing Data reducer => ', () => {
             type: 'FILTER_BY_GENRE',
             payload: 'finance',
         };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({ genreFilters: ['horror', 'finance'] });
 
         // Removing horror
@@ -278,7 +278,7 @@ describe('Testing Data reducer => ', () => {
             type: 'FILTER_BY_GENRE',
             payload: 'horror',
         };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({ genreFilters: ['finance'] });
     });
 
@@ -289,7 +289,7 @@ describe('Testing Data reducer => ', () => {
         };
 
         const initialState = { authorFilters: [] };
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({ authorFilters: ['Kyle Simpson'] });
 
         // Adding Morgan Housel
@@ -297,7 +297,7 @@ describe('Testing Data reducer => ', () => {
             type: 'FILTER_BY_AUTHOR',
             payload: 'Morgan Housel',
         };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({ authorFilters: ['Kyle Simpson', 'Morgan Housel'] });
 
         // Removing Kyle Simpson
@@ -305,7 +305,7 @@ describe('Testing Data reducer => ', () => {
             type: 'FILTER_BY_AUTHOR',
             payload: 'Kyle Simpson',
         };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({ authorFilters: ['Morgan Housel'] });
     });
 
@@ -316,14 +316,14 @@ describe('Testing Data reducer => ', () => {
         };
 
         const initialState = { priceFilter: '' };
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({ priceFilter: 'low-to-high' });
 
         action = {
             type: 'SORT_BY_PRICE',
             payload: 'high-to-low',
         };
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({ priceFilter: 'high-to-low' });
     });
 
@@ -352,7 +352,7 @@ describe('Testing Data reducer => ', () => {
             },
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             cart: {
                 _id: 'usersCartId',
@@ -393,7 +393,7 @@ describe('Testing Data reducer => ', () => {
             },
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             cart: {
                 _id: 'guest',
@@ -452,7 +452,7 @@ describe('Testing Data reducer => ', () => {
             },
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             cart: {
                 _id: 'guest',
@@ -521,7 +521,7 @@ describe('Testing Data reducer => ', () => {
             },
         };
 
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({
             cart: {
                 _id: 'guest',
@@ -558,7 +558,7 @@ describe('Testing Data reducer => ', () => {
             },
         };
 
-        state = reducer(state, action);
+        state = data_reducers(state, action);
         expect(state).toEqual({
             cart: {
                 _id: 'guest',
@@ -596,7 +596,7 @@ describe('Testing Wishlist reducers', () => {
             wishlists: [],
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             wishlists: [
                 {
@@ -651,7 +651,7 @@ describe('Testing Wishlist reducers', () => {
             ],
         };
 
-        let state = reducer(initialState, action);
+        let state = data_reducers(initialState, action);
         expect(state).toEqual({
             wishlists: [
                 {
@@ -710,7 +710,7 @@ describe('Testing Wishlist reducers', () => {
             ],
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             wishlists: [
                 {
@@ -784,7 +784,7 @@ describe('Testing Wishlist reducers', () => {
             ],
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             wishlists: [
                 {
@@ -854,7 +854,7 @@ describe('Testing Wishlist reducers', () => {
             ],
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             wishlists: [
                 {
@@ -939,7 +939,7 @@ describe('Testing Wishlist reducers', () => {
             ],
         };
 
-        const state = reducer(initialState, action);
+        const state = data_reducers(initialState, action);
         expect(state).toEqual({
             wishlists: [
                 {

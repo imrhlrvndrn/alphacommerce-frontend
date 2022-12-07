@@ -1,4 +1,4 @@
-import { reducer } from './authReducer.js';
+import { auth_reducers } from '../';
 
 describe('Testing Auth reducers', () => {
     it('should test LOGOUT functionality', () => {
@@ -23,7 +23,7 @@ describe('Testing Auth reducers', () => {
             },
         };
 
-        const state = reducer(initialState, action);
+        const state = auth_reducers(initialState, action);
         expect(state).toEqual({
             currentUser: {
                 _id: 'guest',
@@ -73,7 +73,7 @@ describe('Testing Auth reducers', () => {
             },
         };
 
-        const state = reducer(initialState, action);
+        const state = auth_reducers(initialState, action);
         expect(state).toEqual({
             currentUser: {
                 address_tags: [],
@@ -139,7 +139,7 @@ describe('Testing Auth reducers', () => {
             },
         };
 
-        const state = reducer(initialState, action);
+        const state = auth_reducers(initialState, action);
         expect(state).toEqual({
             currentUser: {
                 address_tags: [],

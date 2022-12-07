@@ -6,7 +6,7 @@ const booksFromLocalStorage = getDataFromLocalStorage('books');
 // if (!getDataFromLocalStorage('books')) saveDataToLocalStorage('books', productData);
 
 // ! Shift the entire codebase to adopt the new cart and read_list values from authContext
-export const initialState = {
+export const initial_data_state = {
     genres: [],
     authors: [],
     priceFilter: '',
@@ -23,7 +23,7 @@ export const initialState = {
     wishlists: getDataFromLocalStorage('wishlists') || [],
 };
 
-export const reducer = (state, { type, payload }) => {
+export const data_reducers = (state, { type, payload }) => {
     console.log('Data dispatch => ', { type, payload });
     let currentUser = getDataFromLocalStorage('currentUser') || 'guest';
     // console.log('action: ', { type, payload });
@@ -131,8 +131,8 @@ export const reducer = (state, { type, payload }) => {
         case 'ADD_TO_CART': {
             updatedCart = {
                 ...state.cart,
-                data: [...state.cart.data, ...payload.data],
-                checkout: payload.checkout,
+                data: [...state?.cart?.data, ...payload?.data],
+                checkout: payload?.checkout,
             };
 
             saveDataToLocalStorage('cart', updatedCart);
@@ -194,13 +194,13 @@ export const reducer = (state, { type, payload }) => {
         case 'UPDATE_WISHLIST': {
             const { wishlist: wishlistPayload } = payload;
             const wishlistExists =
-                state.wishlists.findIndex((wishlist) => wishlist._id === wishlistPayload._id) !==
+                state?.wishlists?.findIndex((wishlist) => wishlist?._id === wishlistPayload?._id) !==
                 -1;
             updatedWishlist = wishlistExists
-                ? state.wishlists.map((wishlist) =>
-                      wishlist._id === wishlistPayload._id ? wishlistPayload : wishlist
+                ? state?.wishlists?.map((wishlist) =>
+                      wishlist?._id === wishlistPayload?._id ? wishlistPayload : wishlist
                   )
-                : [...state.wishlists, wishlistPayload];
+                : [...state?.wishlists, wishlistPayload];
 
             saveDataToLocalStorage('wishlists', updatedWishlist);
             return {
@@ -210,15 +210,15 @@ export const reducer = (state, { type, payload }) => {
         }
 
         case 'CREATE_WISHLIST': {
-            updatedWishlist = [...state.wishlists, ...payload];
+            updatedWishlist = [...state?.wishlists, ...payload];
 
             saveDataToLocalStorage('wishlists', updatedWishlist);
             return { ...state, wishlists: updatedWishlist };
         }
 
         case 'DELETE_WISHLIST': {
-            updatedWishlist = state.wishlists.filter(
-                (wishlistItem) => wishlistItem._id !== payload.wishlistId
+            updatedWishlist = state?.wishlists?.filter(
+                (wishlistItem) => wishlistItem?._id !== payload?.wishlistId
             );
 
             saveDataToLocalStorage('wishlists', updatedWishlist);
@@ -229,18 +229,18 @@ export const reducer = (state, { type, payload }) => {
         }
 
         case 'ADD_TO_WISHLIST': {
-            updatedWishlist = state.wishlists.map((wishlist) =>
-                wishlist._id === payload.wishlistId
+            updatedWishlist = state?.wishlists?.map((wishlist) =>
+                wishlist?._id === payload?.wishlistId
                     ? {
                           ...wishlist,
-                          data: [...wishlist.data, ...payload.data].reduce((acc, curVal) => {
-                              tempState[curVal.book._id]
-                                  ? (tempState[curVal.book._id] += 1)
-                                  : (tempState[curVal.book._id] = 1);
-                              if (tempState[curVal.book._id] <= 1) return [...acc, curVal];
+                          data: [...wishlist?.data, ...payload?.data]?.reduce((acc, curVal) => {
+                              tempState[curVal?.book?._id]
+                                  ? (tempState[curVal?.book._id] += 1)
+                                  : (tempState[curVal?.book._id] = 1);
+                              if (tempState[curVal?.book?._id] <= 1) return [...acc, curVal];
                               return [...acc];
                           }, []),
-                          estimated_price: payload.estimated_price,
+                          estimated_price: payload?.estimated_price,
                       }
                     : wishlist
             );
@@ -254,15 +254,15 @@ export const reducer = (state, { type, payload }) => {
 
         // ! update the entire function
         case 'REMOVE_FROM_WISHLIST': {
-            updatedWishlist = state.wishlists.map((wishlistItem) => {
-                if (wishlistItem._id === payload.wishlistId) {
+            updatedWishlist = state?.wishlists?.map((wishlistItem) => {
+                if (wishlistItem?._id === payload?.wishlistId) {
                     return {
                         ...wishlistItem,
-                        data: wishlistItem.data.filter(
+                        data: wishlistItem?.data?.filter(
                             (wishlistProduct) =>
-                                wishlistProduct.book._id !== payload.wishlistItem._id
+                                wishlistProduct?.book?._id !== payload?.wishlistItem?._id
                         ),
-                        estimated_price: payload.estimated_price,
+                        estimated_price: payload?.estimated_price,
                     };
                 }
                 return wishlistItem;

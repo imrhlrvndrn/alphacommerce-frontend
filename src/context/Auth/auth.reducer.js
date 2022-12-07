@@ -21,7 +21,7 @@ import { getDataFromLocalStorage, saveDataToLocalStorage } from '../../hooks/use
  }
 */
 
-export const initialState = {
+export const initial_auth_state = {
     currentUser: getDataFromLocalStorage('currentUser') || {
         _id: 'guest',
         email: null,
@@ -31,7 +31,7 @@ export const initialState = {
     },
 };
 
-export const reducer = (state, { type, payload }) => {
+export const auth_reducers = (state, { type, payload }) => {
     console.log('auth dispatch:', { type, payload });
 
     switch (type) {
