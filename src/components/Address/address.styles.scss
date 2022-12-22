@@ -1,0 +1,22 @@
+.address {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+
+    &.active{
+        border-radius: 10px;
+        border: 2px solid #F8D410;
+        background-color: rgba(248, 212, 16,.1);
+    }
+
+    .default_tag{
+        font-size: 0.8rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 5px;
+        background-color: #F8D410;
+        color: black;
+    }
+
+}

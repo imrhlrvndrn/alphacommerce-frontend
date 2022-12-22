@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './global.scss';
 
 // React components
-import { HomePage, CartPage, ListingPage, ProductPage, WishlistPage } from './pages';
+import { HomePage, CartPage, ListingPage, ProductPage, WishlistPage, CheckoutPage } from './pages';
 import { Nav, Toast } from './components';
 
 export const App = () => {
@@ -106,6 +106,7 @@ export const App = () => {
                     <Route exact path='/cart' element={<CartPage />} />
                     <Route exact path='/wishlists' element={<WishlistPage />} />
                     <Route exact path='/wishlists/:id' element={<WishlistPage />} />
+                    <Route exact path='/checkout' element={<CheckoutPage />} />
                 </Routes>
             </Router>
             {toasts?.length > 0 && <Toast />}

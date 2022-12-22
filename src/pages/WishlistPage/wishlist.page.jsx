@@ -6,6 +6,7 @@ import { useDataLayer, useAuth, useTheme, useModalManager } from '../../context'
 
 // React Components
 import { WishlistCard, WishlistItem } from '../../components';
+import { maxWords } from '../../utils';
 
 export const WishlistPage = () => {
     const { theme } = useTheme();
@@ -18,8 +19,11 @@ export const WishlistPage = () => {
 
     const renderWishListItems = () =>
         wishlists[wishlistIndex]?.data?.length
-            ? wishlists[wishlistIndex]?.data?.map((wishListItem) => (
-                  <WishlistItem item={wishListItem?.book} />
+            ? wishlists[wishlistIndex]?.data?.map((item) => (
+                  <WishlistItem
+                      item={item?.book}
+                      wishist_name={wishlists[wishlistIndex]?.name?.name}
+                  />
               ))
             : 'No items in wishlist';
 
@@ -47,21 +51,24 @@ export const WishlistPage = () => {
     useEffect(() => {
         if (Cookies.get('userId') !== 'loggedout') (async () => await fetchWishlists())();
         else navigate('/', { replace: true });
-    }, []);
+    }, [wishlists]);
 
     return (
         <>
-            <div className='cart-wrapper' style={{ backgroundColor: theme.dark_background }}>
+            <div className='cart-wrapper' style={{ backgroundColor: theme?.dark_background }}>
                 <div className='cart'>
-                    <div className='text-md uppercase font-semibold' style={{ color: theme.color }}>
+                    <div
+                        className='text-md uppercase font-semibold'
+                        style={{ color: theme?.color }}
+                    >
                         {wishlists[wishlistIndex]?.name?.name}
                     </div>
-                    <div className='cart-items' style={{ color: theme.color }}>
+                    <div className='cart-items' style={{ color: theme?.color }}>
                         {renderWishListItems()}
                     </div>
                     <button
                         className='continue-shopping mr-8'
-                        style={{ backgroundColor: theme.light_background, color: theme.color }}
+                        style={{ backgroundColor: theme?.light_background, color: theme?.color }}
                         onClick={() => navigate('/')}
                     >
                         Add more to wishlist
@@ -69,29 +76,53 @@ export const WishlistPage = () => {
                 </div>
                 <div
                     className='cart-checkout p-8 h-max'
-                    style={{ backgroundColor: theme.light_background, color: theme.color }}
+                    style={{ backgroundColor: theme?.light_background, color: theme?.color }}
                 >
-                    <h2>Wishlists</h2>
-                    <button
-                        className='w-full font-semibold text-align-center'
+                    <div
                         style={{
-                            backgroundColor: 'transparent',
-                            color: theme?.color,
                             marginBottom: '1rem',
-                        }}
-                        onClick={() => {
-                            showModal('NEW_WISHLIST_MODAL');
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
                         }}
                     >
-                        Add New Wishlist
-                    </button>
+                        <h2 style={{ margin: '0' }}>Wishlists</h2>
+                        <button
+                            className='w-max font-semibold text-align-center'
+                            style={{
+                                padding: '0 0 0 1rem',
+                                fontWeight: '400',
+                                fontSize: '2rem',
+                                backgroundColor: 'transparent',
+                                color: theme?.color,
+                            }}
+                            onClick={() => {
+                                showModal('NEW_WISHLIST_MODAL');
+                            }}
+                        >
+                            +
+                        </button>
+                    </div>
                     <div className='checkout-group mb-4'>
                         {wishlists?.map((wishlist) => (
-                            <WishlistCard
-                                name={wishlist?.name?.name}
-                                _id={wishlist?._id}
-                                key={wishlist?._id}
-                            />
+                            <div
+                                className='p-4 mb-4 wishlistcard'
+                                style={{
+                                    backgroundColor:
+                                        urlParams?.id === wishlist?._id &&
+                                        theme?.constants?.primary,
+                                    // : theme?.dark_background,
+                                    color:
+                                        urlParams?.id === wishlist?._id
+                                            ? theme?.constants?.dark
+                                            : theme?.color,
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() => navigate(`/wishlists/${wishlist?._id}`)}
+                            >
+                                {maxWords(wishlist?.name?.name, 25)}
+                            </div>
                         ))}
                     </div>
                 </div>

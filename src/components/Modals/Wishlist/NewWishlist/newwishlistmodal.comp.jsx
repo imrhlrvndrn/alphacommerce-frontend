@@ -21,7 +21,7 @@ export const NewWishlistModal = () => {
         <Modal>
             <div className='wishlist_modal' style={{ color: theme?.color }}>
                 <h1 className='heading'>Create new wishlist</h1>
-                <form>
+                <form onSubmit={() => addNewWishlist()}>
                     <input
                         type='text'
                         value={new_wishlist_name}
@@ -39,7 +39,7 @@ export const NewWishlistModal = () => {
                     />
                     <button
                         disabled={disabled}
-                        onClick={addNewWishlist}
+                        type='submit'
                         style={{
                             width: '100%',
                             fontWeight: '600',

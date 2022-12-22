@@ -74,7 +74,9 @@ export const CategoryListItem = ({ item }) => {
                         onClick={() => {
                             showModal(
                                 user_is_authenticated ? 'WISHLIST_MODAL' : 'AUTH_MODAL',
-                                user_is_authenticated ? [item] : { state: { authState: 'login' } }
+                                user_is_authenticated
+                                    ? { action: 'ADD_TO_WISHLIST', item }
+                                    : { state: { authState: 'login' } }
                             );
                             // modalDispatch({
                             //     type:

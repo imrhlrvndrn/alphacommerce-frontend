@@ -1,5 +1,11 @@
 import { createContext, useContext, useState } from 'react';
-import { AuthModal, VariantModal, AddToWishlistModal, NewWishlistModal } from '../../components';
+import {
+    AuthModal,
+    VariantModal,
+    AddToWishlistModal,
+    NewWishlistModal,
+    AddressModal,
+} from '../../components';
 
 const ModalContext = createContext();
 
@@ -8,6 +14,7 @@ export const MODAL_TYPES = {
     WISHLIST_MODAL: AddToWishlistModal,
     AUTH_MODAL: AuthModal,
     NEW_WISHLIST_MODAL: NewWishlistModal,
+    NEW_ADDRESS_MODAL: AddressModal,
 };
 
 export const useModalManager = () => useContext(ModalContext);

@@ -102,7 +102,7 @@ export const data_reducers = (state, { type, payload }) => {
         }
 
         case 'SORT_BY_PRICE': {
-            return { ...state, priceFilter: payload === state.priceFilter ? '' : payload };
+            return { ...state, priceFilter: payload === state?.priceFilter ? '' : payload };
         }
 
         case 'FILTER_BY_AUTHOR': {
@@ -194,8 +194,9 @@ export const data_reducers = (state, { type, payload }) => {
         case 'UPDATE_WISHLIST': {
             const { wishlist: wishlistPayload } = payload;
             const wishlistExists =
-                state?.wishlists?.findIndex((wishlist) => wishlist?._id === wishlistPayload?._id) !==
-                -1;
+                state?.wishlists?.findIndex(
+                    (wishlist) => wishlist?._id === wishlistPayload?._id
+                ) !== -1;
             updatedWishlist = wishlistExists
                 ? state?.wishlists?.map((wishlist) =>
                       wishlist?._id === wishlistPayload?._id ? wishlistPayload : wishlist
@@ -252,7 +253,7 @@ export const data_reducers = (state, { type, payload }) => {
             };
         }
 
-        // ! update the entire function
+        // ? update the entire function, On second thought I think this method is functional without the need of any further edits
         case 'REMOVE_FROM_WISHLIST': {
             updatedWishlist = state?.wishlists?.map((wishlistItem) => {
                 if (wishlistItem?._id === payload?.wishlistId) {
@@ -272,6 +273,37 @@ export const data_reducers = (state, { type, payload }) => {
             return {
                 ...state,
                 wishlists: [...updatedWishlist],
+            };
+        }
+
+        case 'MOVE_WISHLIST_ITEM': {
+            const { wishlist: wishlist_payload, item } = payload;
+            console.log('payload => ', { wishlist_payload, item });
+            updatedWishlist = state?.wishlists?.map((wishlist) =>
+                wishlist?._id.toString() === wishlist_payload?.current?._id.toString()
+                    ? {
+                          ...wishlist,
+                          data: wishlist?.data?.filter(
+                              (product) => product?.book?._id.toString() !== item?._id.toString()
+                          ),
+                      }
+                    : wishlist
+            );
+            console.log('removed from wishlist => ', updatedWishlist);
+            updatedWishlist = state?.wishlists?.map((wishlist) =>
+                wishlist?._id === wishlist_payload?.destination?._id
+                    ? {
+                          ...wishlist,
+                          data: [...wishlist?.data, { book: item }],
+                      }
+                    : wishlist
+            );
+            console.log('added to another wishlist => ', updatedWishlist);
+
+            saveDataToLocalStorage('wishlists', updatedWishlist);
+            return {
+                ...state,
+                wishlists: updatedWishlist,
             };
         }
 

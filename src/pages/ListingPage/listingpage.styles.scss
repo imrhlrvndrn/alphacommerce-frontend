@@ -30,11 +30,11 @@
                 display:flex;
                 flex-wrap:wrap;
 
-                .filter-labels{
-                    padding: .8rem;
-                    background-color: yellow;
-                    color: black;
+                .filter-label{
+                    opacity: 1;
+                    padding: 0.5rem;
                     text-transform: lowercase;
+                    margin-right: 1rem;
                 }
             }
         }

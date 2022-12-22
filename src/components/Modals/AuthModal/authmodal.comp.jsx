@@ -20,7 +20,7 @@ export const AuthModal = () => {
     const [authData, setAuthData] = useState({});
 
     const updateAuthData = (event) =>
-        setAuthData((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
+        setAuthData((prevState) => ({ ...prevState, [event?.target?.name]: event?.target?.value }));
 
     const mergeGuestCartItems = async (cartId, cartItems) => {
         try {

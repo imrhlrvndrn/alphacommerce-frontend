@@ -3,11 +3,11 @@
 .accordion {
     padding: 1.5rem 2rem;
     margin-bottom: 1rem;
-    max-height: 400px;
+    height: max-content;
     overflow-y: hidden;
 
     .filters {
-        height: 300px;
+        height: max-content;
         overflow-y: auto;
 
         /* width */

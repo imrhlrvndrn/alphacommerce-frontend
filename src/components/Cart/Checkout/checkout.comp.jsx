@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import { useTheme } from '../../../context/Theme/theme.context';
-import { useDataLayer } from '../../../context';
+import { useNavigate } from 'react-router-dom';
+import { useDataLayer, useTheme } from '../../../context';
 import { calculateSubTotal, calculateTax, calculateTotal, fixedTo } from '../../../utils';
 
 export const CartCheckout = ({ setWishlistModal }) => {
     const { theme } = useTheme();
+    const navigate = useNavigate();
     const [{ cart }] = useDataLayer();
 
     useEffect(() => {}, [cart.checkout]);
@@ -47,6 +48,7 @@ export const CartCheckout = ({ setWishlistModal }) => {
                         backgroundColor: theme.constants.primary,
                         color: theme.constants.dark,
                     }}
+                    onClick={() => navigate('/checkout')}
                 >
                     Checkout
                 </button>

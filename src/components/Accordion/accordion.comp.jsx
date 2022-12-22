@@ -5,30 +5,33 @@ import './accordion.styles.scss';
 
 export const Accordion = ({ options, updateAccordion, children }) => {
     const { theme } = useTheme();
-    const { heading, isActive, id, multi = false } = options;
+    const { heading, is_active, id, multi = false, edit } = options;
 
     return (
         <div
             className='accordion'
             style={{
-                backgroundColor: theme.light_background,
-                color: theme.color,
-                padding: isActive ? '1.5rem 2rem' : '1rem 1.5rem',
+                backgroundColor: theme?.light_background,
+                color: theme?.color,
+                padding: is_active ? '1.5rem 2rem' : '1rem 1.5rem',
             }}
         >
             <div
                 className='accordion-heading'
-                style={{ marginBottom: isActive ? '1rem' : '' }}
-                onClick={() => updateAccordion(id, multi)}
+                style={{
+                    marginBottom: is_active ? '1rem' : '',
+                    textTransform: edit ? 'capitalize' : 'none',
+                }}
+                onClick={() => updateAccordion({ id, multi })}
             >
-                {heading} <span>{isActive ? '-' : '+'}</span>
+                {heading} <span>{is_active ? '-' : '+'}</span>
             </div>
             <div
                 className='accordion-content'
                 style={{
                     overflowY: 'hidden',
-                    height: isActive ? 'max-content' : '0',
-                    opacity: isActive ? '1' : '0',
+                    height: is_active ? 'max-content' : '0',
+                    opacity: is_active ? '1' : '0',
                     transition: '.4s all ease-in-out',
                 }}
             >

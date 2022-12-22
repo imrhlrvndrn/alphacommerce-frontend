@@ -4,6 +4,7 @@
 
 .modal_wrapper{
     z-index: 100;
+    
 
     .modal_underlay {
         width: 100%;
@@ -21,10 +22,13 @@
         left: 50%;
         z-index: 100;
         height: max-content !important;
-        width: 400px;
+        min-width: 400px;
+        width: auto;
         padding: 2rem;
         position: fixed;
         min-height: 400px;
+        max-height: 70vh;
+        overflow-y: auto;
         background-color: $light;
         transform: translate(-50%, -50%);
     }

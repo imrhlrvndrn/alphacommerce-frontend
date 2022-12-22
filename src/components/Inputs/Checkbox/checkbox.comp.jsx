@@ -5,33 +5,9 @@ import { useTheme, useDataLayer } from '../../../context';
 // styles
 import './checkbox.styles.scss';
 
-export const Checkbox = ({ data, dispatchType }) => {
-    const { name, type } = data;
+export const Checkbox = ({ options }) => {
+    const { event_handler, name, type, is_checked } = options;
     const { theme } = useTheme();
-    const [{ genreFilters, authorFilters }, dataDispatch] = useDataLayer();
-    const [isChecked, setIsChecked] = useState(false);
-
-    console.log('It is filter => ', { genreFilters, name, includes: genreFilters.includes(name) });
-
-    useEffect(() => {
-        if (genreFilters.includes(name) || authorFilters.includes(name))
-            setIsChecked((prevState) => true);
-        else setIsChecked((prevState) => false);
-    }, [genreFilters, authorFilters]);
-
-    const handleCheckboxChange = (event) => {
-        if ((event.key = 'Enter')) {
-            setIsChecked((prevState) => !prevState);
-            const filter = dispatchType === 'FILTER_BY_GENRE' ? genreFilters : authorFilters;
-
-            dataDispatch({
-                type: dispatchType,
-                payload: alreadyExists(filter, name)
-                    ? [...filter.filter((item) => item !== name)]
-                    : [...filter, name],
-            });
-        }
-    };
 
     return (
         <div className='input-checkbox'>
@@ -40,12 +16,12 @@ export const Checkbox = ({ data, dispatchType }) => {
                 aria-label={`${name}`}
                 className='dup-checkbox'
                 style={{
-                    backgroundColor: isChecked ? theme.constants.primary : theme.color,
+                    backgroundColor: is_checked ? theme?.constants?.primary : theme?.color,
                 }}
-                onKeyPress={handleCheckboxChange}
-                onClick={handleCheckboxChange}
+                onKeyDown={(event) => event_handler(event, { name, type })}
+                onClick={(event) => event_handler(event, { name, type })}
             ></span>
-            <label onClick={handleCheckboxChange}>{name}</label>
+            <label onClick={(event) => event_handler(event, { name, type })}>{name}</label>
         </div>
     );
 };

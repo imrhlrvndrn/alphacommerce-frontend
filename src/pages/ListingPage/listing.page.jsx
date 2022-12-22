@@ -51,11 +51,21 @@ export const ListingPage = () => {
             style={{ backgroundColor: theme.dark_background, color: theme.color }}
         >
             {/* <div className='category-page-hero-section'>{deSlugify(urlParams.genre)}</div> */}
-            <main style={{ color: theme.color }}>
+            <main style={{ color: theme?.color }}>
                 <div className='main-header' style={{ opacity: 0.6 }}>
-                    <p>{filteredProducts.length} results found</p>
+                    <p>{filteredProducts?.length} results found</p>
                     <div className='active-labels'>
-                        <div className='filter-label'>{genreFilters[0]}</div>
+                        {genreFilters?.map((filter) => (
+                            <div
+                                className='filter-label'
+                                style={{
+                                    color: theme?.constants?.dark,
+                                    backgroundColor: theme?.constants?.primary,
+                                }}
+                            >
+                                {filter}
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className='main-container'>
