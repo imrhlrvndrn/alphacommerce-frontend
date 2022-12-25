@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Order } from '../../components';
 import { useAuth, useTheme } from '../../context';
 import { useCart } from '../../hooks';
 import { fetch_all_orders } from '../../http';
 
 // styles
 import './orderpage.styles.scss';
+
+// components
+import { OrderContainer } from '../../components';
 
 export const OrderPage = () => {
     const [{ currentUser }] = useAuth();
@@ -47,7 +49,7 @@ export const OrderPage = () => {
             <h2>My Orders</h2>
             <div>
                 {orders?.map((order) => (
-                    <Order order={order} />
+                    <OrderContainer order={order} />
                 ))}
             </div>
         </div>

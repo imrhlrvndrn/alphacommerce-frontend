@@ -1,5 +1,5 @@
 import axios from '../../../axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useWindowSize } from '../../../hooks';
 import { useAuth, useTheme, useDataLayer, useModalManager } from '../../../context';
 
@@ -12,6 +12,7 @@ import { WishListIcon } from '../../../react_icons/WishListIcon';
 import { LightModeIcon } from '../../../react_icons/LightModeIcon';
 
 export const DesktopNav = ({ setAuthModal }) => {
+    const navigate = useNavigate();
     const _window = useWindowSize();
     const { showModal } = useModalManager();
     const [{ cart }, dataDispatch] = useDataLayer();
@@ -98,14 +99,24 @@ export const DesktopNav = ({ setAuthModal }) => {
                                 </>
                             )}
                             {currentUser._id !== 'guest' && (
-                                <li
-                                    onClick={logout}
-                                    style={{
-                                        borderBottom: `2px solid ${theme.light_background}`,
-                                    }}
-                                >
-                                    Logout
-                                </li>
+                                <>
+                                    <li
+                                        onClick={logout}
+                                        style={{
+                                            borderBottom: `2px solid ${theme.light_background}`,
+                                        }}
+                                    >
+                                        Logout
+                                    </li>
+                                    <li
+                                        onClick={() => navigate('/orders')}
+                                        style={{
+                                            borderBottom: `2px solid ${theme.light_background}`,
+                                        }}
+                                    >
+                                        My orders
+                                    </li>
+                                </>
                             )}
                         </ul>
                     </span>

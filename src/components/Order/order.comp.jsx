@@ -1,10 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context';
 import { CartItem } from '../Cart/CartItem/cartitem.comp';
 
 //styles
 import './order.styles.scss';
 
-export const Order = ({ order }) => {
+export const OrderContainer = ({ order }) => {
     const { theme } = useTheme();
     const months = [
         'January',
@@ -43,17 +44,22 @@ export const Order = ({ order }) => {
                 </div>
             </div>
             <div className='order_items'>
-                {order?.items?.map((item) => {
-                    const { image, book_id, name } = item;
-                    return (
-                        <div key={book_id}>
-                            <img src={image} alt={name} />
-                            <div>
-                                <h2>{name}</h2>
-                            </div>
-                        </div>
-                    );
-                })}
+                {order?.items?.map((item) => (
+                    <Order order_item={item} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export const Order = ({ order_item: { book_id, image, name } }) => {
+    const navigate = useNavigate();
+
+    return (
+        <div key={book_id} className='order_item' onClick={() => navigate(`/p/${book_id}`)}>
+            <img src={image} alt={name} />
+            <div>
+                <h3>{name}</h3>
             </div>
         </div>
     );

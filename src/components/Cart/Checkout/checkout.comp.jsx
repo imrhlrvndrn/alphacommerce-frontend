@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDataLayer, useTheme } from '../../../context';
 import { calculateSubTotal, calculateTax, calculateTotal, fixedTo } from '../../../utils';
 
 export const CartCheckout = ({ setWishlistModal }) => {
     const { theme } = useTheme();
     const navigate = useNavigate();
+    const location = useLocation();
     const [{ cart }, data_dispatch] = useDataLayer();
+
+    console.log('location => ', location);
 
     useEffect(() => {
         data_dispatch({
@@ -61,16 +64,18 @@ export const CartCheckout = ({ setWishlistModal }) => {
                         )}
                     </div>
                 </div>
-                <button
-                    className='w-full text-align-center font-semibold'
-                    style={{
-                        backgroundColor: theme?.constants?.primary,
-                        color: theme?.constants?.dark,
-                    }}
-                    onClick={() => navigate('/checkout')}
-                >
-                    Checkout
-                </button>
+                {location?.pathname === '/cart' && (
+                    <button
+                        className='w-full text-align-center font-semibold'
+                        style={{
+                            backgroundColor: theme?.constants?.primary,
+                            color: theme?.constants?.dark,
+                        }}
+                        onClick={() => navigate('/checkout')}
+                    >
+                        Checkout
+                    </button>
+                )}
             </div>
         </div>
     );

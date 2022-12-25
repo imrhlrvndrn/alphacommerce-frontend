@@ -21,3 +21,25 @@
         padding: 1rem;
     }
 }
+
+.order_item{
+    display: flex;
+    margin-bottom: 1rem;
+
+    img{
+        flex: 0.1;
+        height: 170px;
+        max-width: 140px;
+        width: max-content;
+        object-fit: contain;
+        object-position: center;
+        box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    h3{
+        &:hover{
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}
