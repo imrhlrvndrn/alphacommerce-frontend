@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Accordion } from '../../components';
-import { useAuth, useModalManager, useTheme } from '../../context';
+import { useNavigate } from 'react-router-dom';
+import { Accordion, CartCheckout } from '../../components';
+import { useAuth, useDataLayer, useModalManager, useTheme } from '../../context';
 import { get_all_addresses } from '../../http';
 
 // styles
@@ -9,7 +10,9 @@ import { checkout_accordions, update_checkout_accordion } from './checkout.util'
 
 export const CheckoutPage = () => {
     const { theme } = useTheme();
+    const navigate = useNavigate();
     const { showModal } = useModalManager();
+    const [{ cart }] = useDataLayer();
     const [{ currentUser }, auth_dispatch] = useAuth();
 
     const [accordions, setAccordions] = useState(checkout_accordions);
@@ -48,8 +51,17 @@ export const CheckoutPage = () => {
             }
         };
 
+        setCheckoutState((prevState) => ({
+            ...prevState,
+            order: {
+                items: cart?.data,
+            },
+        }));
+
         (async () => await fetch_all_addresses())();
     }, []);
+
+    console.log('Cart data => ', cart);
 
     return (
         <div
@@ -58,11 +70,12 @@ export const CheckoutPage = () => {
         >
             <div className='accordion_container'>
                 {accordions?.map(({ heading, is_active, id, is_locked, render_content }) => {
-                    const content_render = render_content.bind({
+                    const content_render = render_content?.bind({
                         showModal,
                         theme,
                         update_function: setCheckoutState,
                         checkout_address_id: checkout_state?.address?._id,
+                        navigate,
                     });
                     return (
                         <Accordion
@@ -74,11 +87,18 @@ export const CheckoutPage = () => {
                         >
                             {content_render({
                                 addresses: currentUser?.addresses || [{}, {}],
+                                order_items: cart?.data,
+                                user: {
+                                    id: currentUser?._id,
+                                    email: currentUser?.email,
+                                    address: checkout_state?.address,
+                                },
                             })}
                         </Accordion>
                     );
                 })}
             </div>
+            <CartCheckout />
         </div>
     );
 };

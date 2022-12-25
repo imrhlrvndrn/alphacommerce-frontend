@@ -1,4 +1,4 @@
-import { alreadyExists } from '../../utils';
+import { calculateTax, calculateTotal, fixedTo } from '../../utils';
 import { getDataFromLocalStorage, saveDataToLocalStorage } from '../../hooks/useLocalStorage';
 
 // const productData = data?.map((item) => ({ ...item, _id: v4() }));
@@ -44,6 +44,9 @@ export const data_reducers = (state, { type, payload }) => {
             if (tempState[curVal] <= 1) return [...acc, curVal];
             return [...acc];
         }, []);
+
+    const update_checkout_total = (subtotal) =>
+        fixedTo(calculateTotal(subtotal, calculateTax(subtotal)), 2);
 
     switch (type) {
         case 'SET_TOAST': {
@@ -115,10 +118,13 @@ export const data_reducers = (state, { type, payload }) => {
         case 'SET_CART': {
             const { cart } = payload;
             updatedCart = {
-                _id: cart._id,
-                user: cart.user,
-                data: cart.data,
-                checkout: cart.checkout,
+                _id: cart?._id,
+                user: cart?.user,
+                data: cart?.data,
+                checkout: {
+                    ...cart?.checkout,
+                    total: update_checkout_total(cart?.checkout?.subtotal),
+                },
             };
 
             saveDataToLocalStorage('cart', updatedCart);
@@ -132,7 +138,10 @@ export const data_reducers = (state, { type, payload }) => {
             updatedCart = {
                 ...state.cart,
                 data: [...state?.cart?.data, ...payload?.data],
-                checkout: payload?.checkout,
+                checkout: {
+                    ...payload?.checkout,
+                    total: update_checkout_total(payload?.checkout?.subtotal),
+                },
             };
 
             saveDataToLocalStorage('cart', updatedCart);
@@ -145,14 +154,17 @@ export const data_reducers = (state, { type, payload }) => {
         case 'UPDATE_CART_ITEM': {
             updatedCart = {
                 ...state.cart,
-                data: state.cart.data.map((item) =>
-                    (item.book._id === payload._id &&
-                        item.variant.type === payload.updatedItem.variant.type) ||
-                    item._id === payload.updatedItem._id
-                        ? payload.updatedItem
+                data: state?.cart?.data?.map((item) =>
+                    (item?.book?._id === payload?._id &&
+                        item?.variant?.type === payload?.updatedItem?.variant?.type) ||
+                    item?._id === payload?.updatedItem?._id
+                        ? payload?.updatedItem
                         : item
                 ),
-                checkout: payload.checkout,
+                checkout: {
+                    ...payload?.checkout,
+                    total: update_checkout_total(payload?.checkout?.subtotal),
+                },
             };
 
             saveDataToLocalStorage('cart', updatedCart);
@@ -164,14 +176,17 @@ export const data_reducers = (state, { type, payload }) => {
 
         case 'REMOVE_FROM_CART': {
             updatedCart = {
-                ...state.cart,
-                data: state.cart.data.filter(
+                ...state?.cart,
+                data: state?.cart?.data?.filter(
                     (dataItem) =>
                         dataItem.book._id !== payload._id ||
                         (dataItem.book._id === payload._id &&
-                            dataItem.variant.type !== payload.variant.type)
+                            dataItem?.variant?.type !== payload?.variant?.type)
                 ),
-                checkout: payload.checkout,
+                checkout: {
+                    ...payload?.checkout,
+                    total: update_checkout_total(payload?.checkout?.subtotal),
+                },
             };
 
             saveDataToLocalStorage('cart', updatedCart);

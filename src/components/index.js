@@ -22,3 +22,4 @@ export { CartCheckout } from './Cart/Checkout/checkout.comp';
 export { CartItemsContainer } from './Cart/CartItemsContainer/cartitemscontainer.comp';
 export { CartItem } from './Cart/CartItem/cartitem.comp';
 export { Address } from './Address/address.comp';
+export { Order } from './Order/order.comp';

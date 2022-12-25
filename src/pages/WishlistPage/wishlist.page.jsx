@@ -57,12 +57,9 @@ export const WishlistPage = () => {
         <>
             <div className='cart-wrapper' style={{ backgroundColor: theme?.dark_background }}>
                 <div className='cart'>
-                    <div
-                        className='text-md uppercase font-semibold'
-                        style={{ color: theme?.color }}
-                    >
+                    <h2 className='uppercase font-semibold' style={{ color: theme?.color }}>
                         {wishlists[wishlistIndex]?.name?.name}
-                    </div>
+                    </h2>
                     <div className='cart-items' style={{ color: theme?.color }}>
                         {renderWishListItems()}
                     </div>

@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
-import { Address } from '../../components';
+import { Address, CartItem } from '../../components';
+import { checkout } from '../../http';
 
 // ! figure out the arrangement of these methods & constants so that everything is smooth
 export const update_checkout_accordion = function ({ id, multi }) {
@@ -42,6 +43,49 @@ export function render_addresses({ addresses = [] }) {
     );
 }
 
+export function render_order_items({ order_items, user }) {
+    const initiate_checkout = async (event) => {
+        // Transforming the order items into an object that can be passed to the Stripe API
+        order_items = order_items?.map((item) => ({
+            product_data: {
+                name: item?.book?.name,
+                images: [item?.book?.cover_image?.url],
+                metadata: {
+                    book_id: item?.book?._id,
+                    user_id: user?.id,
+                    user_email: user?.email,
+                },
+            },
+            unit_amount: Math.round(
+                (item?.variant?.price + (item?.variant?.price * 18) / 100) * 100
+            ),
+            quantity: item?.quantity,
+        }));
+
+        event.preventDefault();
+        const {
+            data: {
+                success,
+                data: { redirect_url },
+            },
+        } = await checkout({ order_items, user });
+
+        // This URL redirects to the Stripe pre-built checkout page
+        if (success && redirect_url) window.location.href = redirect_url;
+    };
+
+    return (
+        <div className='cart-items' style={{ color: this?.theme?.color }}>
+            {order_items?.map((order_item) => (
+                <CartItem key={order_item?.book?._id} item={order_item} />
+            ))}
+            <form onSubmit={initiate_checkout}>
+                <button type='submit'>Proceed to buy</button>
+            </form>
+        </div>
+    );
+}
+
 export const checkout_accordions = [
     {
         heading: 'Select a delivery address',
@@ -51,17 +95,10 @@ export const checkout_accordions = [
         render_content: render_addresses,
     },
     {
-        heading: 'Payment method',
-        is_active: false,
-        edit: false,
-        id: v4(),
-        render_content: () => {},
-    },
-    {
         heading: 'Review & place your order',
         is_active: false,
         edit: false,
         id: v4(),
-        render_content: () => {},
+        render_content: render_order_items,
     },
 ];

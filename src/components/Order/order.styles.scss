@@ -1,0 +1,23 @@
+.order_container{
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+
+    .order_excerpt{
+        display:flex;
+        padding: 1rem;
+
+        .order_date, .order_total,.order_shipping{
+            margin-right: 1rem;
+
+            .text_sm{
+                opacity: 0.6;
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    .order_items{
+        padding: 1rem;
+    }
+}

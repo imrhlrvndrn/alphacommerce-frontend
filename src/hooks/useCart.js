@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
 import axios from '../axios';
 import { useDataLayer } from '../context';
+import { add_to_cart, fetch_user_cart, remove_from_cart, update_cart } from '../http';
 import { useToast } from './';
 
 export const useCart = () => {
@@ -11,12 +12,7 @@ export const useCart = () => {
         try {
             const {
                 data: { success, data, toast },
-            } = await axios.post(`/carts/${cart._id}`, {
-                multi,
-                data: [...items],
-                type: 'ADD_TO_CART',
-                cart: cart._id === 'guest' ? cart : null,
-            });
+            } = await add_to_cart({ cart, action_type: 'ADD_TO_CART', multi, items });
             if (success) {
                 dispatchNewCartItem(data);
                 setToast({ ...toast, _id: v4() });
@@ -50,11 +46,10 @@ export const useCart = () => {
                     data: { _id, variant: variantResponse, checkout },
                     toast,
                 },
-            } = await axios.post(`/carts/${cart._id}`, {
-                variant: variant,
-                _id: id,
-                type: 'REMOVE_FROM_CART',
-                cart: cart._id === 'guest' ? cart : null,
+            } = await remove_from_cart({
+                cart,
+                action_type: 'REMOVE_FROM_CART',
+                book: { id, variant },
             });
             if (success) {
                 dispatchRemovedCartItem({
@@ -89,12 +84,10 @@ export const useCart = () => {
                     data: { _id, updatedItem, checkout },
                     toast,
                 },
-            } = await axios.post(`/carts/${cart._id}`, {
-                _id: id,
-                variant,
-                inc,
-                cart: cart._id === 'guest' ? cart : null,
-                type: 'UPDATE_QUANTITY',
+            } = await update_cart({
+                cart,
+                book: { id, variant, inc },
+                action_type: 'UPDATE_QUANTITY',
             });
 
             if (success) {
@@ -119,8 +112,9 @@ export const useCart = () => {
             if (cart._id !== 'guest') {
                 const {
                     data: { success, data, toast },
-                } = await axios.post(`/carts/${cart._id}`, {
-                    type: 'FETCH_DETAILS',
+                } = await fetch_user_cart({
+                    cart_id: cart?._id,
+                    action_type: 'FETCH_DETAILS',
                     populate,
                     select,
                 });
