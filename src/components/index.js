@@ -14,7 +14,7 @@ export {
     AddToWishlistModal,
     NewWishlistModal,
 } from './Modals';
-export { Nav, MobileNav, DesktopNav } from './Nav/nav.comp';
+export { Nav, NavBar, NavItem, DropdownItem, DropdownMenu } from './Nav/nav.comp';
 export { ProductList } from './ProductList/productlist.comp';
 export { Toast } from './Toast/toast.comp';
 export { WishlistItem } from './WishlistItem/wishlistitem.comp';

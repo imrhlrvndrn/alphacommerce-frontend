@@ -58,3 +58,60 @@ nav {
         }
     }
 }
+
+.navbar {
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    svg {
+        cursor: pointer;
+    }
+
+    &_items {
+        display: flex;
+        align-items: center;
+
+        .nav_item {
+            position: relative;
+            margin: 0 0 0 1rem;
+
+            .icon {
+                width: 60px;
+                height: 60px;
+                display: grid;
+                border-radius: 30px;
+                place-content: center;
+                transition: 0.4s filter ease-in-out;
+
+                &:hover {
+                    cursor: pointer;
+                    filter: brightness(1.4);
+                }
+            }
+
+            .dropdown {
+                position: absolute;
+                top: calc(100% + 1rem);
+                left: 0;
+                border-radius: 10px;
+                min-width: 200px;
+                height: max-content;
+                padding: 0.2rem;
+
+                &_item {
+                    padding: 1rem;
+                    cursor: pointer;
+                    border-radius: 10px;
+                    margin-bottom: 0.2rem;
+                    transition: 0.4s filter ease-in-out;
+
+                    &:hover {
+                        filter: brightness(1.2);
+                    }
+                }
+            }
+        }
+    }
+}

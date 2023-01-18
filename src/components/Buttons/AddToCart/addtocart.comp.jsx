@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth, useTheme, useDataLayer } from '../../../context';
 
-// styles
-import './addtocart.styles.scss';
-
 // React components
 import { QuantityButtons } from '../../';
 import { useCart } from '../../../hooks/useCart';

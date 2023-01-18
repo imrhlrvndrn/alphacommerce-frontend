@@ -9,3 +9,4 @@ export { OutlinedWishListIcon } from './OutlinedWishListIcon';
 export { RightArrowIcon } from './RightArrowIcon';
 export { WishListIcon } from './WishListIcon';
 export { EditIcon } from './EditIcon';
+export { UserIcon } from './UserIcon';
