@@ -20,6 +20,7 @@ Password: test@1234
 
 ## Features
 
+-   Communication w/ custom Node JS [Backend](https://github.com/imrhlrvndrn/alphacommerce-backend)
 -   User Authentications
 -   Filter books by Genre, Author or Price
 -   Add/Remove books to cart
