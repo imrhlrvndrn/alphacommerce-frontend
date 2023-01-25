@@ -24,9 +24,7 @@ export const initial_data_state = {
 };
 
 export const data_reducers = (state, { type, payload }) => {
-    console.log('Data dispatch => ', { type, payload });
     let currentUser = getDataFromLocalStorage('currentUser') || 'guest';
-    // console.log('action: ', { type, payload });
     let updatedCart = [],
         updatedWishlist = [],
         tempState = {};
@@ -48,6 +46,7 @@ export const data_reducers = (state, { type, payload }) => {
     const update_checkout_total = (subtotal) =>
         fixedTo(calculateTotal(subtotal, calculateTax(subtotal)), 2);
 
+    console.log('data dispatch => ', { type, payload });
     switch (type) {
         case 'SET_TOAST': {
             const { data } = payload;
@@ -293,7 +292,6 @@ export const data_reducers = (state, { type, payload }) => {
 
         case 'MOVE_WISHLIST_ITEM': {
             const { wishlist: wishlist_payload, item } = payload;
-            console.log('payload => ', { wishlist_payload, item });
             updatedWishlist = state?.wishlists?.map((wishlist) =>
                 wishlist?._id.toString() === wishlist_payload?.current?._id.toString()
                     ? {
@@ -304,7 +302,6 @@ export const data_reducers = (state, { type, payload }) => {
                       }
                     : wishlist
             );
-            console.log('removed from wishlist => ', updatedWishlist);
             updatedWishlist = state?.wishlists?.map((wishlist) =>
                 wishlist?._id === wishlist_payload?.destination?._id
                     ? {
@@ -313,7 +310,6 @@ export const data_reducers = (state, { type, payload }) => {
                       }
                     : wishlist
             );
-            console.log('added to another wishlist => ', updatedWishlist);
 
             saveDataToLocalStorage('wishlists', updatedWishlist);
             return {

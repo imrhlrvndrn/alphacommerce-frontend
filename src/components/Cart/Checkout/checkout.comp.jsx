@@ -9,8 +9,6 @@ export const CartCheckout = ({ setWishlistModal }) => {
     const location = useLocation();
     const [{ cart }, data_dispatch] = useDataLayer();
 
-    console.log('location => ', location);
-
     useEffect(() => {
         data_dispatch({
             type: 'SET_CART',
@@ -66,12 +64,13 @@ export const CartCheckout = ({ setWishlistModal }) => {
                 </div>
                 {location?.pathname === '/cart' && (
                     <button
+                        disabled={cart?.data?.length <= 0}
                         className='w-full text-align-center font-semibold'
                         style={{
                             backgroundColor: theme?.constants?.primary,
                             color: theme?.constants?.dark,
                         }}
-                        onClick={() => navigate('/checkout')}
+                        onClick={() => cart?.data?.length > 0 && navigate('/checkout')}
                     >
                         Checkout
                     </button>

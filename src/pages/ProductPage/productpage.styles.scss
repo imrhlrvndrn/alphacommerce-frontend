@@ -3,8 +3,8 @@
 .product-page {
     width: 100%;
     height: auto;
-    padding: 4rem;
-    min-height: calc(100vh - 80px);
+    padding: 8rem 2rem;
+    min-height: 100vh;
     @include lg-tablet {
         padding: 4rem 2rem;
     }

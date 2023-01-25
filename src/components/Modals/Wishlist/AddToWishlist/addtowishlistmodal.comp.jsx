@@ -83,6 +83,7 @@ export const AddToWishlistModal = () => {
                 </h1>
                 <div className='cta'>
                     <input
+                        autoFocus
                         type='text'
                         ref={wishlistRef}
                         value={filter}

@@ -1843,7 +1843,7 @@ input {
     flex-direction: column;
 }
 
-.flex--row {
+.flex-row {
     flex-direction: row;
 }
 

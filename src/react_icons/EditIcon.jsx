@@ -1,4 +1,9 @@
-export const EditIcon = ({ fill = 'currentColor', size = '24', onClick, className }) => {
+export const EditIcon = ({
+    fill = 'currentColor',
+    size = '24',
+    onClick = () => {},
+    className = '',
+}) => {
     return (
         <svg
             stroke={fill}

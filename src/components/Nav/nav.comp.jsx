@@ -51,7 +51,7 @@ export const Nav = () => {
                 });
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -108,7 +108,7 @@ export const Nav = () => {
                         <LightModeIcon fill={theme?.color} />
                     )
                 }
-                onClick={toggleTheme}
+                event_function={toggleTheme}
             />
         </NavBar>
     );
@@ -118,35 +118,32 @@ export const NavBar = ({ children, logo }) => {
     const { theme } = useTheme();
 
     return (
-        <nav
-            className='navbar'
-            style={{ backgroundColor: theme?.dark_background, color: theme?.color }}
-        >
+        <nav className='navbar' style={{ color: theme?.color }}>
             {logo}
             <div className='navbar_items'>{children}</div>
         </nav>
     );
 };
 
-export const NavItem = ({ children, icon = null, to = '', onClick, badge_counter = 0 }) => {
+export const NavItem = ({ children, icon = null, to = '', event_function, badge_counter = 0 }) => {
     const { theme } = useTheme();
     const [open, setOpen] = useState(false);
-    const on_click_action = onClick ? onClick : () => !to && setOpen(!open);
+    event_function = event_function ? event_function : () => !to && setOpen(!open);
 
     const NavItemWrapper = ({ children }) =>
         to ? (
-            <Link to={to} className='nav_item' onClick={on_click_action}>
+            <Link to={to} className='nav_item' onClick={event_function}>
                 {children}
             </Link>
         ) : (
-            <div className='nav_item' onClick={on_click_action}>
+            <div className='nav_item' onClick={event_function}>
                 {children}
             </div>
         );
 
     return (
         <NavItemWrapper>
-            <div className='icon' style={{ backgroundColor: theme?.light_background }}>
+            <div className='icon' style={{ backgroundColor: theme?.dark_background }}>
                 {icon}
             </div>
             {badge_counter > 0 && (

@@ -54,35 +54,10 @@ export const App = () => {
             });
         } catch (error) {
             console.error(error);
-            console.log(error.response);
         }
     };
 
-    // const getUser = async () => {
-    //     const userId = Cookies.get('userId');
-    //     try {
-    //         const {
-    //             data: { success, user },
-    //         } = await axios.get(`/users/${userId}`);
-    //         console.log('USER DATA => ', { success, user, cookie: userId });
-
-    //         if (success) {
-    //             authDispatch({ type: 'LOGIN', payload: user });
-    //             const {
-    //                 data: { success, data, toast },
-    //             } = await axios.get(`/carts/${user.cart._id}`);
-
-    //             console.log('CART DATA => ', { success, data });
-    //             if (success) dataDispatch({ type: 'SET_CART', payload: { cart: data.cart } });
-    //             dataDispatch({ type: 'SET_WISHLISTS', payload: { wishlists: user.wishlists } });
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // };
-
     useEffect(() => {
-        // getUser();
         if (!getFromLocalStorage('currentUser'))
             saveToLocalStorage('currentUser', {
                 _id: 'guest',

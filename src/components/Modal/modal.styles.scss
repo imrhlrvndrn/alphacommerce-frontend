@@ -1,10 +1,7 @@
 @import '../../mixins.scss';
 
-
-
-.modal_wrapper{
+.modal_wrapper {
     z-index: 100;
-    
 
     .modal_underlay {
         width: 100%;
@@ -29,7 +26,6 @@
         min-height: 400px;
         max-height: 70vh;
         overflow-y: auto;
-        background-color: $light;
         transform: translate(-50%, -50%);
     }
 }

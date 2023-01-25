@@ -4,7 +4,7 @@ import { useTheme, useDataLayer } from '../../context';
 import './homepage.styles.scss';
 
 // React components
-import { ProductList, CategoryList } from '../../components';
+import { CategoryList } from '../../components';
 
 export const HomePage = () => {
     const { theme } = useTheme();
@@ -12,15 +12,6 @@ export const HomePage = () => {
 
     return (
         <>
-            <div
-                className='hero-section'
-                style={{
-                    backgroundColor: theme.dark_background,
-                    color: theme.color,
-                }}
-            >
-                <ProductList />
-            </div>
             <section
                 className='categories'
                 style={{

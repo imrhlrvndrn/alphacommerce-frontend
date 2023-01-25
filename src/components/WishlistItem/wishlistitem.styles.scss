@@ -1,12 +1,8 @@
 @import '../../mixins.scss';
 
 .wishlistItem_wrapper {
-    // display: flex;
-    // align-items: center;
-    // min-height: 300px;
     padding: 2rem 0;
     margin-bottom: 2rem;
-    // border: 1px solid white;
 
     .wishlistItem_container {
         display: flex;

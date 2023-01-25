@@ -1,13 +1,15 @@
-@import '../../mixins.scss';
+@use '../../mixins.scss';
 
 .accordion {
     padding: 1.5rem 2rem;
     margin-bottom: 1rem;
     height: max-content;
+    border-radius: 10px;
     overflow-y: hidden;
 
     .filters {
         height: max-content;
+        max-height: 500px;
         overflow-y: auto;
 
         /* width */
@@ -17,12 +19,12 @@
 
         /* Track */
         &::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: mixins.$darkest;
         }
 
         /* Handle */
         &::-webkit-scrollbar-thumb {
-            background: #888;
+            background: mixins.$primary;
         }
 
         /* Handle on hover */

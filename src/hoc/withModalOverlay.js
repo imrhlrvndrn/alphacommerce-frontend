@@ -1,25 +1,19 @@
-import { useModal, useTheme } from '../context';
+import { useTheme } from '../context';
 
 export const withModalOverlay = (WrappedComponent) => {
     const WithModalOverlay = (props) => {
         const { theme } = useTheme();
-        // const [_, modalDispatch] = useModal();
-
-        console.log('HOC props => ', props);
 
         return (
             <>
                 {props.modal.isActive && (
                     <div
-                        // className='overlay'
                         style={{
                             width: '100%',
                             height: '100vh',
                             position: 'fixed',
                             top: '0',
                             left: '0',
-                            // zIndex: '9',
-                            // backgroundColor: 'rgba(0, 0, 0, 0.8)',
                         }}
                     >
                         <div
@@ -30,7 +24,6 @@ export const withModalOverlay = (WrappedComponent) => {
                                 zIndex: '9',
                                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
                             }}
-                            // onClick={() => modalDispatch({ type: props.dispatchType })}
                         ></div>
                         <div
                             className='modal'

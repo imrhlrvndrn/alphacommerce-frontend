@@ -5,8 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDataLayer, useAuth, useTheme, useModalManager } from '../../context';
 
 // React Components
-import { WishlistCard, WishlistItem } from '../../components';
+import { WishlistItem } from '../../components';
 import { maxWords } from '../../utils';
+import { TrashIcon } from '../../react_icons';
 
 export const WishlistPage = () => {
     const { theme } = useTheme();
@@ -46,11 +47,43 @@ export const WishlistPage = () => {
         }
     };
 
-    // useEffect(() => {}, [urlParams?.id, currentUser]);
+    const deleteWishlist = async (wishlistId) => {
+        let wishlist_index = wishlists?.findIndex((wishlist) => wishlist?._id === wishlistId);
+        if (wishlists?.length === 1) {
+            wishlist_index = -1;
+        } else if (wishlist_index + 1 > wishlists?.length - 1) {
+            wishlist_index = 0;
+        } else wishlist_index += 1;
+
+        try {
+            const {
+                data: { success, data },
+            } = await axios.post('/wishlists', {
+                type: 'DELETE_WISHLIST',
+                wishlists: [wishlistId],
+            });
+            if (success) {
+                if (data?.[0]?._id === wishlistId) {
+                    dataDispatch({ type: 'DELETE_WISHLIST', payload: { wishlistId } });
+                    if (wishlist_index > -1)
+                        navigate(`/wishlists/${wishlists?.[wishlist_index]?._id}`, {
+                            replace: true,
+                        });
+                    else navigate(`/wishlists`, { replace: true });
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     useEffect(() => {
         if (Cookies.get('userId') !== 'loggedout') (async () => await fetchWishlists())();
         else navigate('/', { replace: true });
+    }, []);
+
+    useEffect(() => {
+        console.log('wishlsits changed');
     }, [wishlists]);
 
     return (
@@ -93,9 +126,7 @@ export const WishlistPage = () => {
                                 backgroundColor: 'transparent',
                                 color: theme?.color,
                             }}
-                            onClick={() => {
-                                showModal('NEW_WISHLIST_MODAL');
-                            }}
+                            onClick={() => showModal('NEW_WISHLIST_MODAL')}
                         >
                             +
                         </button>
@@ -103,12 +134,13 @@ export const WishlistPage = () => {
                     <div className='checkout-group mb-4'>
                         {wishlists?.map((wishlist) => (
                             <div
-                                className='p-4 mb-4 wishlistcard'
+                                key={wishlist?._id}
+                                className='p-4 wishlistcard flex justify-between items-center'
                                 style={{
                                     backgroundColor:
                                         urlParams?.id === wishlist?._id &&
                                         theme?.constants?.primary,
-                                    // : theme?.dark_background,
+                                    borderRadius: '10px',
                                     color:
                                         urlParams?.id === wishlist?._id
                                             ? theme?.constants?.dark
@@ -119,6 +151,15 @@ export const WishlistPage = () => {
                                 onClick={() => navigate(`/wishlists/${wishlist?._id}`)}
                             >
                                 {maxWords(wishlist?.name?.name, 25)}
+                                <TrashIcon
+                                    size={26}
+                                    fill={
+                                        urlParams?.id === wishlist?._id
+                                            ? theme?.constants?.dark
+                                            : theme?.color
+                                    }
+                                    onClick={() => deleteWishlist(wishlist?._id)}
+                                />
                             </div>
                         ))}
                     </div>

@@ -14,8 +14,6 @@ export const CartPage = () => {
     const { fetchCart } = useCart();
     const [{ cart }] = useDataLayer();
 
-    // Determining the cart values based on authentication
-
     useEffect(() => {}, [cart.checkout, currentUser]);
 
     useEffect(() => {

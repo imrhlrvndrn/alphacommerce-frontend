@@ -7,6 +7,7 @@ export const InputGroup = ({ onChange, data }) => {
             style: {},
         },
         input = {
+            autoFocus: false,
             required: false,
             value: '',
             onChange: () => {},
@@ -24,6 +25,7 @@ export const InputGroup = ({ onChange, data }) => {
                 {input?.placeholder}
             </label>
             <input
+                autoFocus={input?.autoFocus}
                 value={input?.value}
                 onChange={onChange}
                 style={input?.style}

@@ -23,8 +23,6 @@ export const useWishlist = () => {
                 type: 'ADD_TO_WISHLIST',
             });
 
-            console.log('API add to wishlist => ', data);
-
             if (success) {
                 setToast({ ...toast, _id: v4() });
                 dataDispatch({

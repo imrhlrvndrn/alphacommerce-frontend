@@ -12,7 +12,8 @@ export const NewWishlistModal = () => {
     const [disabled, setDisabled] = useState(false);
     const { modal } = useModalManager();
 
-    const addNewWishlist = () => {
+    const addNewWishlist = (event) => {
+        event.preventDefault();
         setDisabled(true);
         createWishlist(new_wishlist_name);
     };
@@ -21,8 +22,9 @@ export const NewWishlistModal = () => {
         <Modal>
             <div className='wishlist_modal' style={{ color: theme?.color }}>
                 <h1 className='heading'>Create new wishlist</h1>
-                <form onSubmit={() => addNewWishlist()}>
+                <form onSubmit={addNewWishlist}>
                     <input
+                        autoFocus
                         type='text'
                         value={new_wishlist_name}
                         autoComplete='off'

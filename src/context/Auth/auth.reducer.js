@@ -12,8 +12,6 @@ export const initial_auth_state = {
 };
 
 export const auth_reducers = (state, { type, payload }) => {
-    console.log('auth dispatch:', { type, payload });
-
     switch (type) {
         case 'SIGNUP': {
             // * Setting up the new user
@@ -38,23 +36,13 @@ export const auth_reducers = (state, { type, payload }) => {
             saveDataToLocalStorage('currentUser', {
                 ...payload,
             });
-            // * saveDataToLocalStorage('currentUser', cookie ? cookie : 'guest');
-            // saveDataToLocalStorage('cart', [getDataFromLocalStorage('cart')]);
-            // ! Make a transferData function to transfer all the Guest account data into a verified
-            // ! user account
-            // The function call goes here
-            // console.log(validUser);
+
             return {
                 ...state,
                 currentUser: {
                     ...payload,
                 },
             };
-
-            // * return {
-            // *    ...state,
-            // *    currentUser: cookie ? cookie : 'guest',
-            // * };
         }
 
         case 'LOGOUT': {
@@ -94,16 +82,28 @@ export const auth_reducers = (state, { type, payload }) => {
         }
 
         case 'ADD_ADDRESS': {
+            let updated_addresses;
+            if (payload?.address?.is_default)
+                updated_addresses = [
+                    ...state?.currentUser?.addresses?.map((address) => ({
+                        ...address,
+                        is_default: false,
+                    })),
+                    payload?.address,
+                ];
+            else if (state?.currentUser?.addresses?.length === 0)
+                updated_addresses = [{ ...payload?.address, is_default: true }];
+            else updated_addresses = [...state?.currentUser?.addresses, payload?.address];
+
             saveDataToLocalStorage('currentUser', {
                 ...state?.currentUser,
-                addresses: [...state?.currentUser?.addresses, payload?.address],
+                addresses: updated_addresses,
             });
-
             return {
                 ...state,
                 currentUser: {
                     ...state?.currentUser,
-                    addresses: [...state?.currentUser?.addresses, payload?.address],
+                    addresses: updated_addresses,
                 },
             };
         }
@@ -112,7 +112,11 @@ export const auth_reducers = (state, { type, payload }) => {
             const updated_addresses = {
                 ...state?.currentUser,
                 addresses: state?.currentUser?.addresses?.map((address) =>
-                    address?._id === payload?.address?._id ? payload?.address : address
+                    address?._id === payload?.address?._id
+                        ? payload?.address
+                        : payload?.address?.is_default
+                        ? { ...address, is_default: false }
+                        : address
                 ),
             };
             saveDataToLocalStorage('currentUser', updated_addresses);
@@ -123,9 +127,25 @@ export const auth_reducers = (state, { type, payload }) => {
         }
 
         case 'DELETE_ADDRESS': {
-            const updated_addresses = state?.currentUser?.addresses?.filter(
-                (address) => address?._id !== payload?.address_id
-            );
+            let updated_addresses = [],
+                address_to_delete = state?.currentUser?.addresses?.filter(
+                    (address) => address?._id === payload?.address_id
+                )[0];
+            if (address_to_delete?.is_default) {
+                updated_addresses = state?.currentUser?.addresses
+                    ?.filter(
+                        (address) => address._id.toString() !== payload?.address_id?.toString()
+                    )
+                    ?.map((address, index) =>
+                        index === 0
+                            ? { ...address, is_default: true }
+                            : { ...address, is_default: false }
+                    );
+            } else
+                updated_addresses = state?.currentUser?.addresses?.filter(
+                    (address) => address._id.toString() !== payload?.address_id?.toString()
+                );
+
             saveDataToLocalStorage('currentUser', {
                 ...state?.currentUser,
                 addresses: updated_addresses,

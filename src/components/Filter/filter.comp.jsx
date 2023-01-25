@@ -119,10 +119,6 @@ export const Filter = () => {
         else if (heading === 'Price') dataDispatch({ type: 'SORT_BY_PRICE', payload: priceFilter });
     };
 
-    // useEffect(() => {
-    //     console.log('Filter changed');
-    // }, [genreFilters, authorFilters]);
-
     return (
         <div className='filter-container'>
             {accordions?.map(({ heading, id, is_active }) => (

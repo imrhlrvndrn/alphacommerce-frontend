@@ -7,8 +7,8 @@ import { CategoryListItem } from '../../';
 export const ListingProducts = ({ products }) => {
     return (
         <div className='listing-container'>
-            {products.map((product) => (
-                <CategoryListItem key={product.id} item={product} />
+            {products?.map((product) => (
+                <CategoryListItem key={product._id} item={product} />
             ))}
         </div>
     );

@@ -23,13 +23,12 @@ export const CategoryListItem = ({ item }) => {
     const user_is_authenticated = currentUser?._id !== 'guest';
 
     useEffect(() => {
-        // const userIndex = cart.findIndex((cartItem) => cartItem.userId === currentUser);
         setExistsInCart((prevState) =>
-            cart.data?.findIndex((productItem) => productItem.book._id === item._id) === -1
+            cart?.data?.findIndex((productItem) => productItem?.book?._id === item?._id) === -1
                 ? false
                 : true
         );
-    }, [cart, currentUser._id]);
+    }, [cart, currentUser?._id]);
 
     const cartOperation = () => {
         existsInCart
@@ -58,19 +57,23 @@ export const CategoryListItem = ({ item }) => {
                     <div
                         className='cart-icon'
                         style={{
-                            backgroundColor: existsInCart ? theme.constants.primary : theme.color,
+                            backgroundColor: existsInCart
+                                ? theme?.constants?.primary
+                                : theme?.color,
                         }}
                         onClick={cartOperation}
                     >
                         <CartIcon
                             style={{
-                                fill: existsInCart ? theme.constants.dark : theme.dark_background,
+                                fill: existsInCart
+                                    ? theme?.constants?.dark
+                                    : theme?.dark_background,
                             }}
                         />
                     </div>
                     <div
                         className='bibliography-icon'
-                        style={{ backgroundColor: theme.color }}
+                        style={{ backgroundColor: theme?.color }}
                         onClick={() => {
                             showModal(
                                 user_is_authenticated ? 'WISHLIST_MODAL' : 'AUTH_MODAL',
@@ -78,29 +81,17 @@ export const CategoryListItem = ({ item }) => {
                                     ? { action: 'ADD_TO_WISHLIST', item }
                                     : { state: { authState: 'login' } }
                             );
-                            // modalDispatch({
-                            //     type:
-                            //         currentUser._id !== 'guest'
-                            //             ? 'UPDATE_WISHLIST_MODAL'
-                            //             : 'UPDATE_AUTH_MODAL',
-                            //     payload: {
-                            //         state:
-                            //             currentUser._id !== 'guest'
-                            //                 ? [item]
-                            //                 : { authState: 'login' },
-                            //     },
-                            // })
                         }}
                     >
-                        <OutlinedWishListIcon style={{ fill: theme.dark_background }} />
+                        <OutlinedWishListIcon style={{ fill: theme?.dark_background }} />
                     </div>
                 </div>
                 <img className='stretch' src={cover_image?.url} alt={name} />
                 <div
                     className='overlay flex justify-between items-center'
-                    style={{ backgroundColor: theme.dark_background }}
+                    style={{ backgroundColor: theme?.dark_background }}
                 >
-                    <div className='info' style={{ color: theme.color }}>
+                    <div className='info' style={{ color: theme?.color }}>
                         <div className='title font-semibold'>{maxWords(name, 12)}</div>
                         <div className='authors text-xs opac-6'>
                             By {maxWords(authors.join(', '), 12)}
@@ -108,16 +99,16 @@ export const CategoryListItem = ({ item }) => {
                         <div className='price text-md font-semibold'>₹ {variants[0].price}</div>
                     </div>
                     <Link
-                        // target='_blank'
+                        target='_blank'
                         to={`/p/${_id}`}
                         className='text-lg icon-50 flex items-center justify-center'
                         style={{
-                            backgroundColor: _window.width <= 768 ? 'transparent' : theme.color,
-                            color: theme.dark_background,
+                            backgroundColor: _window.width <= 768 ? 'transparent' : theme?.color,
+                            color: theme?.dark_background,
                         }}
                     >
                         <RightArrowIcon
-                            fill={_window.width <= 768 ? theme.color : theme.dark_background}
+                            fill={_window.width <= 768 ? theme?.color : theme?.dark_background}
                         />
                     </Link>
                 </div>

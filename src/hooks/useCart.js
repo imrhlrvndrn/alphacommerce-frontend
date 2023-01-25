@@ -1,5 +1,4 @@
 import { v4 } from 'uuid';
-import axios from '../axios';
 import { useDataLayer } from '../context';
 import { add_to_cart, fetch_user_cart, remove_from_cart, update_cart } from '../http';
 import { useToast } from './';

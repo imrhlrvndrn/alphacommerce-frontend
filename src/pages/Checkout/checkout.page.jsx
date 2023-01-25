@@ -38,7 +38,6 @@ export const CheckoutPage = () => {
                         data: { addresses: updated_addresses },
                     },
                 } = await get_all_addresses({ user_id: currentUser?._id });
-                console.log('new addresses => ', { updated_addresses, success });
                 if (success) {
                     auth_dispatch({ type: 'SET_ADDRESSES', payload: { updated_addresses } });
                     setCheckoutState((prevState) => ({
@@ -58,10 +57,8 @@ export const CheckoutPage = () => {
             },
         }));
 
-        (async () => await fetch_all_addresses())();
+        (async () => (cart?.data?.length > 0 ? await fetch_all_addresses() : navigate(-1)))();
     }, []);
-
-    console.log('Cart data => ', cart);
 
     return (
         <div

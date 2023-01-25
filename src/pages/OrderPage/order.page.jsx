@@ -19,7 +19,6 @@ export const OrderPage = () => {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        console.log('Search params =>', { search_params, checkout_status });
         if (checkout_status === 'completed') {
             // Make a call to retrieve the user's cart items & update the state & localStorage values
             fetchCart({
@@ -38,8 +37,6 @@ export const OrderPage = () => {
             setOrders((prevState) => all_orders);
         })();
     }, []);
-
-    console.log('Orders => ', orders);
 
     return (
         <div

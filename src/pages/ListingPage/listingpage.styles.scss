@@ -1,8 +1,8 @@
-@import '../../mixins.scss';
+@use '../../mixins.scss';
 
 .category-page {
     width: 100%;
-    min-height: calc(100vh - 80px);
+    min-height: 100vh;
     height: auto;
 
     &-hero-section {
@@ -17,35 +17,24 @@
     }
 
     main {
-        padding: 4rem;
+        padding: 8rem 2rem;
         position: relative;
-        @include tablet {
-            padding: 2rem;
-        }
 
         .main-header {
             margin-bottom: 1rem;
 
-            .active-labels{
-                display:flex;
-                flex-wrap:wrap;
+            .active-labels {
+                margin-top: 0.5rem;
+                display: flex;
+                flex-wrap: wrap;
 
-                .filter-label{
+                .filter-label {
                     opacity: 1;
                     padding: 0.5rem;
                     text-transform: lowercase;
                     margin-right: 1rem;
+                    border-radius: 10px;
                 }
-            }
-        }
-
-        .filter-container {
-            top: 80px;
-            position: sticky;
-            height: max-content;
-
-            .accordion {
-                margin-bottom: 0.5rem;
             }
         }
 
@@ -54,10 +43,31 @@
             position: relative;
             justify-content: space-between;
 
+            @include mixins.lg-tablet {
+                flex-direction: column;
+            }
+
+            .filter-container {
+                flex: 0.2;
+                top: 100px;
+                position: sticky;
+                height: max-content;
+
+                @include mixins.lg-tablet {
+                    top: 0;
+                    position: relative;
+                    margin-bottom: 1rem;
+                }
+
+                .accordion {
+                    margin-bottom: 0.5rem;
+                }
+            }
+
             .category-container {
                 flex: 0.8;
                 padding: 0 0 0 1rem;
-                @include tablet {
+                @include mixins.tablet {
                     padding: 0 0 0 2rem;
                 }
 

@@ -1,32 +1,35 @@
-.order_container{
+.order_container {
     width: 100%;
     height: auto;
     margin-bottom: 1rem;
+    border-radius: 10px;
 
-    .order_excerpt{
-        display:flex;
+    .order_excerpt {
+        display: flex;
         padding: 1rem;
 
-        .order_date, .order_total,.order_shipping{
+        .order_date,
+        .order_total,
+        .order_shipping {
             margin-right: 1rem;
 
-            .text_sm{
+            .text_sm {
                 opacity: 0.6;
                 font-size: 0.8rem;
             }
         }
     }
 
-    .order_items{
+    .order_items {
         padding: 1rem;
     }
 }
 
-.order_item{
+.order_item {
     display: flex;
     margin-bottom: 1rem;
 
-    img{
+    img {
         flex: 0.1;
         height: 170px;
         max-width: 140px;
@@ -36,8 +39,8 @@
         box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, 0.1);
     }
 
-    h3{
-        &:hover{
+    h3 {
+        &:hover {
             cursor: pointer;
             text-decoration: underline;
         }

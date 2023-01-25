@@ -1,7 +1,7 @@
 import axios from '../../axios';
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth, useTheme } from '../../context';
+import { useNavigate, useParams } from 'react-router-dom';
 import { findIndex, getSelectedVariantPrice } from '../../utils';
 
 // styles
@@ -9,11 +9,14 @@ import './productpage.styles.scss';
 
 // React components
 import { AddToCart } from '../../components';
+import { useCart } from '../../hooks';
 
 export const ProductPage = () => {
+    const navigate = useNavigate();
     const { theme } = useTheme();
-    const [{ currentUser }, authDispatch] = useAuth();
+    const [{ currentUser }] = useAuth();
     const urlParams = useParams();
+    const { addToCart } = useCart();
     const [book, setBook] = useState(null);
 
     const fetchBookDetails = async () => {
@@ -45,13 +48,7 @@ export const ProductPage = () => {
             ),
         }));
 
-    useEffect(() => {
-        console.log(
-            `---- Re-rendered the Product Page => selected variant is "${
-                book?.variants[findIndex(book?.variants, 'isSelected')].type
-            }"----`
-        );
-    }, [book?.variants, currentUser]);
+    useEffect(() => {}, [book?.variants, currentUser]);
 
     useEffect(() => {
         fetchBookDetails();
@@ -123,6 +120,21 @@ export const ProductPage = () => {
                                 style={{
                                     backgroundColor: theme.constants.primary,
                                     color: theme.constants.dark,
+                                }}
+                                onClick={async () => {
+                                    await addToCart({
+                                        items: [
+                                            {
+                                                book,
+                                                quantity: 1,
+                                                variant:
+                                                    book?.variants[
+                                                        findIndex(book?.variants, 'isSelected')
+                                                    ],
+                                            },
+                                        ],
+                                    });
+                                    navigate('/checkout');
                                 }}
                             >
                                 Get A Copy

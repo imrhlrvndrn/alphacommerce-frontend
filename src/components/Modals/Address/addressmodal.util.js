@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { add_new_address } from '../../../http';
+import { add_new_address, edit_address } from '../../../http';
 
 export async function create_new_address(event, args) {
     event.preventDefault();
@@ -12,11 +12,37 @@ export async function create_new_address(event, args) {
             },
         } = await add_new_address(args);
 
-        if (success) this?.auth_dispatch({ type: 'ADD_ADDRESS', payload: { address } });
+        if (success)
+            this?.auth_dispatch({
+                type: 'ADD_ADDRESS',
+                payload: { address },
+            });
     } catch (error) {
         console.error(error);
     } finally {
         this?.hideModal();
+    }
+}
+
+export async function update_address(event, args) {
+    event.preventDefault();
+    try {
+        const {
+            data: {
+                success,
+                data: { address },
+            },
+        } = await edit_address(args);
+
+        if (success)
+            this?.auth_dispatch({
+                type: 'EDIT_ADDRESS',
+                payload: { address },
+            });
+    } catch (error) {
+        console.error(error);
+    } finally {
+        this.hideModal();
     }
 }
 
@@ -33,9 +59,10 @@ export function address_inputs(new_address) {
             input: {
                 id: v4(),
                 required: true,
-                value: new_address?.full_name,
-                name: 'full_name',
-                placeholder: 'Full name',
+                autoFocus: true,
+                value: new_address?.receiver_name,
+                name: 'receiver_name',
+                placeholder: 'Receiver name',
                 style: { backgroundColor: this.theme?.light_background, color: this.theme?.color },
             },
             label: { style: { color: this.theme?.color } },
@@ -102,7 +129,7 @@ export function address_inputs(new_address) {
                 value: new_address?.phone_number,
                 type: 'number',
                 name: 'phone_number',
-                placeholder: 'Mobile number with country code',
+                placeholder: 'Phone number',
                 style: { backgroundColor: this.theme?.light_background, color: this.theme?.color },
             },
             label: { style: { color: this.theme?.color } },

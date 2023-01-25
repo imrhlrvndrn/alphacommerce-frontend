@@ -1,6 +1,5 @@
 export const getFilteredData = (inputArray, filters) => {
     let filteredData = [...inputArray];
-    console.log('getFilteredData => ', { inputArray, filteredData });
     filters?.forEach((filter) => {
         if (filter?.data === true || filter?.data?.length > 0) {
             filteredData = filteredData?.filter(
@@ -27,6 +26,5 @@ export const getSortedData = (inputArray, filter) => {
             sortedData = sortedData;
             break;
     }
-    console.log('Sorted data => ', { inputArray, sortedData });
     return sortedData;
 };

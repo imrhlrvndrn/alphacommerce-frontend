@@ -30,7 +30,7 @@ export const CategoryList = ({ genre }) => {
     };
 
     useEffect(() => {
-        fetchBooksByGenre(6);
+        (async () => await fetchBooksByGenre(6))();
     }, []);
 
     return (
@@ -41,20 +41,11 @@ export const CategoryList = ({ genre }) => {
                     <span style={{ color: theme?.color }} className='floating-genre'>
                         {genre}
                     </span>
-                    {/* <Link
-                        style={{ color: theme.color }}
-                        to={{
-                            pathname: `/p`,
-                            search: `?genre=${slugify(genre)}`,
-                        }}
-                    >
-                        Show all
-                    </Link> */}
                     <button
                         style={{ color: theme?.color, backgroundColor: 'transparent', padding: 0 }}
                         onClick={() => navigate('/p', { state: { genre } })}
                     >
-                        Show all
+                        See more
                     </button>
                 </div>
             )}
